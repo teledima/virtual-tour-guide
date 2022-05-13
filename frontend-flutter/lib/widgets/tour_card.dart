@@ -5,7 +5,7 @@ import 'package:frontend_flutter/models.dart';
 
 class TourCard extends StatelessWidget {
   final TourDetail tour;
-  final ValueChanged<TourDetail> onTap;
+  final ValueChanged<TourDetail> onTourSelected;
 
   Image get thumbnail {
     if (tour.metadata.thumbnail == null) {
@@ -15,7 +15,7 @@ class TourCard extends StatelessWidget {
     }
   }
 
-  const TourCard({Key? key, required this.tour, required this.onTap}): super(key: key);
+  const TourCard({Key? key, required this.tour, required this.onTourSelected}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class TourCard extends StatelessWidget {
         clipBehavior: Clip.none,
         padding: const EdgeInsets.all(16),
         child: GestureDetector(
-          onTap: () => onTap(tour), 
+          onTap: () => onTourSelected(tour), 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

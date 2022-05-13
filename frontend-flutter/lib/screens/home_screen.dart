@@ -7,8 +7,9 @@ import 'package:frontend_flutter/widgets/tours_list.dart';
 
 class HomeScreen extends StatefulWidget {
   final TourRepository tourRepository = TourRepository();
+  final Function(TourDetail) onTourSelected;
   
-  HomeScreen({Key? key}): super(key: key);
+  HomeScreen({Key? key, required this.onTourSelected}): super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -30,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         future: _listTours,
         builder: (context, AsyncSnapshot<List<TourDetail>> snapshot) {
           if (snapshot.hasData) {
-            return ToursList(toursList: snapshot.data!);
+            return ToursList(toursList: snapshot.data!, onTourSelected: widget.onTourSelected);
           } else {
             return const Center(child: Text('Loading...'));
           }

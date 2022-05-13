@@ -18,4 +18,16 @@ class TourRepository {
       throw Exception("Failed to load tours list");
     }
   } 
+
+  Future<TourDetail> fetchTour(String tourId) async {
+    final response = await http.get(Uri.parse('$serverName/tours/$tourId'));
+    
+    if (response.statusCode == 200) {
+      final tour = TourDetail.fromJson(jsonDecode(response.body));
+      return tour;
+    }
+    else {
+      throw Exception("Failed to load tour detail");
+    }
+  }
 }

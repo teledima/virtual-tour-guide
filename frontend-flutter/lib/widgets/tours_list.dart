@@ -6,8 +6,9 @@ import 'tour_card.dart';
 
 class ToursList extends StatelessWidget {
   final List<TourDetail> toursList;
+  final Function(TourDetail) onTourSelected;
 
-  const ToursList({Key? key, required this.toursList}): super(key: key);
+  const ToursList({Key? key, required this.toursList, required this.onTourSelected}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class ToursList extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final List<Widget> children = [ 
       for (TourDetail tour in toursList) 
-        TourCard(tour: tour, onTap: (tour) => print('hello')) 
+        TourCard(tour: tour, onTourSelected: onTourSelected) 
     ];
 
     if (screenSize.width > 720) {

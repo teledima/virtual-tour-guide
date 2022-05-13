@@ -1,16 +1,18 @@
 // Flutter
 import 'package:flutter/material.dart';
+import 'package:frontend_flutter/models.dart';
 // Application
 import 'package:frontend_flutter/screens/home_screen.dart';
 
 class HomePage extends Page {
-  const HomePage(): super(key: const ValueKey("HomePage"));
+  final Function(TourDetail) onTourSelected;
+  const HomePage({required this.onTourSelected}): super(key: const ValueKey("HomePage"));
 
   @override
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
       settings: this,
-      builder: (context) => HomeScreen()
+      builder: (context) => HomeScreen(onTourSelected: onTourSelected)
     );
   }
 }
