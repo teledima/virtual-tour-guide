@@ -16,5 +16,24 @@ class HotspotRepository {
     );
 
     return UpdateResult.fromJson(jsonDecode(response.body));
+  }
+
+  Future<UpdateResult> moveHotspot(
+    TourDetail tour, SceneDetail currentScene, HotspotDetail hotspot, 
+    double newLatitude, double newLongtitude
+  ) async {
+    final response = await http.patch(
+      Uri.parse('$serverName/hotspots'), 
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        "tourId": tour.tourId, 
+        "sceneFrom": currentScene.sceneId, 
+        "sceneTo": hotspot.sceneId,
+        "latitude": newLatitude,
+        "longtitude": newLongtitude
+      })
+    );
+
+    return UpdateResult.fromJson(jsonDecode(response.body));
   } 
 }

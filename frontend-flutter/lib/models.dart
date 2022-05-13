@@ -75,12 +75,18 @@ class SceneDetail {
   deleteHotspot(HotspotDetail hotspotDetail) {
     hotspots.removeWhere((hotspot) => hotspot.sceneId == hotspotDetail.sceneId);
   }
+
+  updateHotspotPosition(HotspotDetail hotspot, double newLatitude, double newLongtitude) {
+    final matchedHotspot = hotspots.firstWhere((hotspotItem) => hotspotItem.sceneId == hotspot.sceneId);
+    matchedHotspot.latitude = newLatitude;
+    matchedHotspot.longtitude = newLongtitude;
+  }
 }
 
 class HotspotDetail {
   final HotspotTypes hotspotType;
-  final double latitude;
-  final double longtitude;
+  late double latitude;
+  late double longtitude;
   final String sceneId;
 
   HotspotDetail(this.hotspotType, this.latitude, this.longtitude, this.sceneId);

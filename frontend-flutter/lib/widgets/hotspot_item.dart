@@ -6,12 +6,14 @@ import 'package:frontend_flutter/models.dart';
 class HotspotItem extends StatefulWidget {
   final HotspotDetail hotspotDetail;
   final Function() onTap;
+  final Function() onMove;
   final Function() onDelete;
 
   const HotspotItem({
     Key? key, 
     required this.hotspotDetail,
     required this.onTap,
+    required this.onMove,
     required this.onDelete
   }): super(key: key);
 
@@ -32,7 +34,8 @@ class HotspotItemState extends State<HotspotItem> {
         context: context, 
         position: RelativeRect.fromRect(_tapPosition & const Size(4, 4), Offset.zero & screenSize ), 
         items: <PopupMenuEntry>[
-          PopupMenuItem(value: 1, child: const Text('Delete'), onTap: widget.onDelete)
+          PopupMenuItem(value: 1, child: const Text('Move'), onTap: widget.onMove),
+          PopupMenuItem(value: 2, child: const Text('Delete'), onTap: widget.onDelete)
         ]
       ),
       child: Column(

@@ -21,6 +21,8 @@ class PanoScreen extends StatefulWidget {
 class PanoScreenState extends State<PanoScreen> {
   late Future<TourDetail> _currentTour;
   late SceneDetail _currentScene;
+  late HotspotDetail? _updatedHotspot;
+  late bool takePosition;
   
   @override
   void initState() {
@@ -34,6 +36,13 @@ class PanoScreenState extends State<PanoScreen> {
   onTapHotspot(TourDetail tour, HotspotDetail hotspot) {
     setState(() {
       _currentScene = tour.findSceneById(hotspot.sceneId)!;
+    });
+  }
+
+  onMoveHotspot(HotspotDetail hotspot) {
+    setState(() {
+      takePosition = true;
+      _updatedHotspot = hotspot;
     });
   }
 
@@ -66,10 +75,32 @@ class PanoScreenState extends State<PanoScreen> {
                     widget: HotspotItem(
                       hotspotDetail: hotspot,
                       onTap: () => onTapHotspot(snapshot.data!, hotspot),
+                      onMove: () => onMoveHotspot(hotspot),
                       onDelete: () => onDeleteHotspot(snapshot.data!, _currentScene, hotspot),
                     )
                   )
               ],
+              onTap: (longtitude, latitude, _) {
+                if (takePosition) {
+                  setState(() {
+                    _currentScene.updateHotspotPosition(
+                      _updatedHotspot!, 
+                      latitude, 
+                      longtitude
+                    );
+                    widget.hotspotRepository.moveHotspot(
+                      snapshot.data!, 
+                      _currentScene, 
+                      _updatedHotspot!, 
+                      latitude, 
+                      longtitude
+                    );
+
+                    takePosition = false;
+                    _updatedHotspot = null;
+                  });
+                }
+              },
             );
           } else {
             return const Center(child: Text('Loading...'),);
