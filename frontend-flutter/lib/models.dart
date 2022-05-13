@@ -8,9 +8,13 @@ class TourDetail {
   final String tourId;
   final TourMetadata metadata;
   final List<SceneDetail>? scenes;
-  final DefaultDetail? defaultScene;
+  final DefaultDetail? defaultDetail;
 
-  TourDetail(this.tourId, this.metadata, this.scenes, this.defaultScene);
+  TourDetail(this.tourId, this.metadata, this.scenes, this.defaultDetail);
+
+  SceneDetail get defaultScene {
+    return findSceneById(defaultDetail!.firstScene)!;
+  }
 
   factory TourDetail.fromJson(Map<String, dynamic> json) {
     return TourDetail(
@@ -19,6 +23,14 @@ class TourDetail {
       json['scenes']?.map((scene) => SceneDetail.fromJson(scene)).toList().cast<SceneDetail>(), 
       json.containsKey('default') ? DefaultDetail.fromJson(json['default']) : null
     );
+  }
+
+  SceneDetail? findSceneById(String sceneId) {
+    if (scenes!.any((scene) => scene.sceneId == sceneId)) {
+      return scenes!.firstWhere((scene) => scene.sceneId == sceneId);
+    } else {
+      return null;
+    }
   }
 }
 
