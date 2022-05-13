@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application/PanoPage.dart';
+import 'package:frontend_flutter/pano_page.dart';
 import 'package:http/http.dart' as http;
 
-import './models.dart';
-import 'ToursList.dart';
+import 'models.dart';
+import 'tours_list.dart';
+import 'pano_page.dart';
 
 class ToursListPage extends StatefulWidget {
   const ToursListPage({Key? key}): super(key: key);
