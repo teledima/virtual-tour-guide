@@ -71,6 +71,10 @@ class SceneDetail {
       json['hotSpots'].map((hotspot) => HotspotDetail.fromJson(hotspot)).toList().cast<HotspotDetail>()
     );
   }
+
+  deleteHotspot(HotspotDetail hotspotDetail) {
+    hotspots.removeWhere((hotspot) => hotspot.sceneId == hotspotDetail.sceneId);
+  }
 }
 
 class HotspotDetail {
@@ -99,6 +103,26 @@ class HotspotDetail {
       double.parse(json['latitude'].toString()), 
       double.parse(json['longtitude'].toString()), 
       json['sceneId']
+    );
+  }
+}
+
+class UpdateResult {
+  final bool acknowledged;
+  final int matchedCount;
+  final int modifiedCount;
+  final int upsertedCount;
+  final String? upsertedId;
+
+  UpdateResult(this.acknowledged, this.matchedCount, this.modifiedCount, this.upsertedCount, this.upsertedId);
+
+  factory UpdateResult.fromJson(Map<String, dynamic> json) {
+    return UpdateResult(
+      json['acknowledged'], 
+      json['matchedCount'], 
+      json['modifiedCount'], 
+      json['upsertedCount'], 
+      json.containsKey('upsertedId') ? json['upsertedId'] : null
     );
   }
 }

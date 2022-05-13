@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
 // Application
 import 'package:frontend_flutter/data/tour_repository.dart';
+import 'package:frontend_flutter/data/hotspot_repository.dart';
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/widgets/hotspot_item.dart';
 
 class PanoScreen extends StatefulWidget {
   final TourRepository tourRepository = TourRepository();
+  final HotspotRepository hotspotRepository = HotspotRepository();
+
   final TourDetail currentTour;
   PanoScreen({Key? key, required this.currentTour}): super(key: key);
 
@@ -28,6 +31,22 @@ class PanoScreenState extends State<PanoScreen> {
     });
   }
 
+  onTapHotspot(TourDetail tour, HotspotDetail hotspot) {
+    setState(() {
+      _currentScene = tour.findSceneById(hotspot.sceneId)!;
+    });
+  }
+
+  onDeleteHotspot(TourDetail tour, SceneDetail currentScene, HotspotDetail hotspot) async {
+    final result = await widget.hotspotRepository.deleteHotspot(tour, currentScene, hotspot);
+
+    if (result.modifiedCount > 0) {
+      setState(() {
+        _currentScene.deleteHotspot(hotspot);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,8 +65,8 @@ class PanoScreenState extends State<PanoScreen> {
                     longitude: hotspot.longtitude,
                     widget: HotspotItem(
                       hotspotDetail: hotspot,
-                      onTap: () => print('tap'),
-                      onDelete: () => print('delet'),
+                      onTap: () => onTapHotspot(snapshot.data!, hotspot),
+                      onDelete: () => onDeleteHotspot(snapshot.data!, _currentScene, hotspot),
                     )
                   )
               ],
