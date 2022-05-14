@@ -48,6 +48,7 @@ class Panorama extends StatefulWidget {
     this.onImageLoad,
     this.child,
     this.hotspots,
+    this.staticChildren
   }) : super(key: key);
 
   /// The initial latitude, in degrees, between -90 and 90. default to 0 (the vertical center of the image).
@@ -130,6 +131,9 @@ class Panorama extends StatefulWidget {
 
   /// Place widgets in the panorama.
   final List<Hotspot>? hotspots;
+
+  /// Static elements (have a fixed position) in the panorama
+  final List<Positioned>? staticChildren;
 
   @override
   _PanoramaState createState() => _PanoramaState();
@@ -363,10 +367,10 @@ class _PanoramaState extends State<Panorama> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget buildHotspotWidgets(List<Hotspot>? hotspots) {
+  Widget buildWidgets() {
     final List<Widget> widgets = <Widget>[];
-    if (hotspots != null && scene != null) {
-      for (Hotspot hotspot in hotspots) {
+    if (widget.hotspots != null && scene != null) {
+      for (Hotspot hotspot in widget.hotspots!) {
         final Vector3 pos = positionFromLatLon(hotspot.latitude, hotspot.longitude);
         final Offset orgin = Offset(hotspot.width * hotspot.orgin.dx, hotspot.height * hotspot.orgin.dy);
         final Matrix4 transform = scene!.camera.lookAtMatrix * matrixFromLatLon(hotspot.latitude, hotspot.longitude);
@@ -387,7 +391,12 @@ class _PanoramaState extends State<Panorama> with SingleTickerProviderStateMixin
         widgets.add(child);
       }
     }
-    return Stack(children: widgets);
+    if (widget.staticChildren != null && scene != null) {
+      for (var staticChild in widget.staticChildren!) {
+        widgets.add(staticChild);
+      }
+    }
+    return Stack(children: widgets, alignment: Alignment.bottomCenter);
   }
 
   @override
@@ -437,7 +446,7 @@ class _PanoramaState extends State<Panorama> with SingleTickerProviderStateMixin
         StreamBuilder(
           stream: _stream,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return buildHotspotWidgets(widget.hotspots);
+            return buildWidgets();
           },
         ),
       ],
