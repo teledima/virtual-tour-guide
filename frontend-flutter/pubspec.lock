@@ -152,9 +152,9 @@ packages:
   panorama:
     dependency: "direct main"
     description:
-      name: panorama
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../panorama"
+      relative: true
+    source: path
     version: "0.4.1"
   path:
     dependency: transitive

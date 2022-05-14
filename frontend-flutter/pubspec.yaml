@@ -29,7 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  panorama: ^0.4.1
+  panorama: 
+    path: ../panorama
   http: ^0.13.4
   context_menus: ^1.0.1
 
