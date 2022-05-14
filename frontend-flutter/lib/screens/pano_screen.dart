@@ -80,25 +80,28 @@ class PanoScreenState extends State<PanoScreen> {
                     )
                   )
               ],
-              onTap: (longtitude, latitude, _) {
+              onTap: (longtitude, latitude, _) async{
                 if (takePosition) {
-                  setState(() {
-                    _currentScene.updateHotspotPosition(
-                      _updatedHotspot!, 
-                      latitude, 
-                      longtitude
-                    );
-                    widget.hotspotRepository.moveHotspot(
-                      snapshot.data!, 
-                      _currentScene, 
-                      _updatedHotspot!, 
-                      latitude, 
-                      longtitude
-                    );
+                  final result = await widget.hotspotRepository.moveHotspot(
+                    snapshot.data!, 
+                    _currentScene, 
+                    _updatedHotspot!, 
+                    latitude, 
+                    longtitude
+                  );
 
-                    takePosition = false;
-                    _updatedHotspot = null;
-                  });
+                  if (result.modifiedCount > 0) {
+                    setState(() {
+                      _currentScene.updateHotspotPosition(
+                        _updatedHotspot!, 
+                        latitude, 
+                        longtitude
+                      );
+
+                      takePosition = false;
+                      _updatedHotspot = null;
+                    });                    
+                  }
                 }
               },
             );
