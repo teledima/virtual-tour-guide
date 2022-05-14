@@ -1,11 +1,12 @@
 // Flutter
 import 'package:flutter/material.dart';
-import 'package:panorama/panorama.dart';
 // Application
 import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/data/hotspot_repository.dart';
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/widgets/hotspot_item.dart';
+import 'package:frontend_flutter/widgets/prompt.dart';
+import 'package:panorama/panorama.dart';
 
 class PanoScreen extends StatefulWidget {
   final TourRepository tourRepository = TourRepository();
@@ -22,7 +23,19 @@ class PanoScreenState extends State<PanoScreen> {
   late Future<TourDetail> _currentTour;
   late SceneDetail _currentScene;
   late HotspotDetail? _updatedHotspot;
-  late bool takePosition;
+
+  bool? _takePosition;
+  bool get takePosition {
+    if (_takePosition == null) {
+      return false;
+    }
+    else {
+      return _takePosition!;
+    }
+  }
+  set takePosition(bool value) {
+    _takePosition = value;
+  }
   
   @override
   void initState() {
@@ -80,6 +93,9 @@ class PanoScreenState extends State<PanoScreen> {
                     )
                   )
               ],
+              staticChildren: takePosition ? const [
+                Positioned(bottom: 0, child: Prompt(message: 'Выберите новое место'))
+              ] : [],
               onTap: (longtitude, latitude, _) async{
                 if (takePosition) {
                   final result = await widget.hotspotRepository.moveHotspot(
