@@ -33,6 +33,7 @@ dependencies:
     path: ../panorama
   http: ^0.13.4
   context_menus: ^1.0.1
+  image_picker: ^0.8.5+3
 
 
   # The following adds the Cupertino Icons font to your application.

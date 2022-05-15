@@ -1,5 +1,6 @@
 // Flutter
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 // Application
 import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/data/hotspot_repository.dart';
@@ -7,6 +8,7 @@ import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/widgets/hotspot_item.dart';
 import 'package:frontend_flutter/widgets/prompt.dart';
 import 'package:panorama/panorama.dart';
+import 'package:frontend_flutter/screens/add_hotspot_dialog.dart';
 
 class PanoScreen extends StatefulWidget {
   final TourRepository tourRepository = TourRepository();
@@ -46,6 +48,17 @@ class PanoScreenState extends State<PanoScreen> {
     });
   }
 
+  onAddImage() async {
+    showDialog(
+      context: context, 
+      builder: (_) => const AddHotspotDialog()
+    );
+    /*
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    */
+  }
+
   onTapHotspot(TourDetail tour, HotspotDetail hotspot) {
     setState(() {
       _currentScene = tour.findSceneById(hotspot.sceneId)!;
@@ -61,7 +74,6 @@ class PanoScreenState extends State<PanoScreen> {
 
   onDeleteHotspot(TourDetail tour, SceneDetail currentScene, HotspotDetail hotspot) async {
     final result = await widget.hotspotRepository.deleteHotspot(tour, currentScene, hotspot);
-
     if (result.modifiedCount > 0) {
       setState(() {
         _currentScene.deleteHotspot(hotspot);
@@ -71,12 +83,13 @@ class PanoScreenState extends State<PanoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        future: _currentTour,
-        builder: (context, AsyncSnapshot<TourDetail> snapshot) {
-          if (snapshot.hasData) {
-            return Panorama(
+    return FutureBuilder(
+      future: _currentTour,
+      builder: (context, AsyncSnapshot<TourDetail> snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(title: Text(snapshot.data!.metadata.title)),
+            body: Panorama(
               child: Image.network('http://192.168.1.44:8080/images/${_currentScene.panorama}'),
               hotspots: [
                 for (HotspotDetail hotspot in _currentScene.hotspots) 
@@ -120,12 +133,18 @@ class PanoScreenState extends State<PanoScreen> {
                   }
                 }
               },
-            );
-          } else {
-            return const Center(child: Text('Loading...'),);
-          }
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: onAddImage,
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.add),
+              mini: true,
+            ),
+          );
+        } else {
+          return const Center(child: Text('Loading...'),);
         }
-      ),
+      }
     );
   } 
 }
