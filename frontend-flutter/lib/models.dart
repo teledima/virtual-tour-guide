@@ -18,7 +18,7 @@ class TourDetail {
 
   factory TourDetail.fromJson(Map<String, dynamic> json) {
     return TourDetail(
-      json['tourId'],
+      json['_id'],
       json['title'],
       json['scenes']?.map((scene) => SceneDetail.fromJson(scene)).toList().cast<SceneDetail>(), 
       json.containsKey('default') ? DefaultDetail.fromJson(json['default']) : null

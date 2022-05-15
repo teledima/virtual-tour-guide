@@ -9,7 +9,7 @@ const tourCollection = mongoClient.db(db_name).collection('tours')
 router.get('/all', async(req, res) => {
     mongoClient = await mongoClient.connect();
     
-    const cursor = tourCollection.find({}, { _id: true, metadata: true }).map((item) => Object.assign({tourId: item._id, metadata: item.metadata}));
+    const cursor = tourCollection.find({});
     res.status(200).send(await cursor.toArray());
 });
 
