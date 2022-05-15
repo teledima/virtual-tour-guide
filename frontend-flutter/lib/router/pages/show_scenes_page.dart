@@ -14,7 +14,7 @@ class ShowScenesPage extends Page {
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
       settings: this,
-      builder: (_) => const ShowScenesScreen()
+      builder: (_) => ShowScenesScreen(tour: tour,)
     );
   }
 }

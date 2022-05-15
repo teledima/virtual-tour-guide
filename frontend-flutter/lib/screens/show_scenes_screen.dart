@@ -1,7 +1,14 @@
+// Flutter
 import 'package:flutter/material.dart';
+// Application
+import 'package:frontend_flutter/models.dart';
 
 class ShowScenesScreen extends StatefulWidget {
-  const ShowScenesScreen({Key? key}): super(key: key);
+  final TourDetail tour;
+  const ShowScenesScreen({
+    Key? key,
+    required this.tour
+  }): super(key: key);
 
   @override
   ShowScenesScreenState createState() => ShowScenesScreenState();
