@@ -96,7 +96,7 @@ class PanoScreenState extends State<PanoScreen> {
         if (snapshot.hasData) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(snapshot.data!.metadata.title),
+              title: Text(snapshot.data!.title),
               actions: [
                 TextButton(style: style, onPressed: widget.onShowScenes, child: const Text('Scenes'))
               ],

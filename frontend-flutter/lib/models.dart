@@ -6,11 +6,11 @@ enum HotspotTypes {
 
 class TourDetail {
   final String tourId;
-  final TourMetadata metadata;
+  final String title;
   final List<SceneDetail>? scenes;
   final DefaultDetail? defaultDetail;
 
-  TourDetail(this.tourId, this.metadata, this.scenes, this.defaultDetail);
+  TourDetail(this.tourId, this.title, this.scenes, this.defaultDetail);
 
   SceneDetail get defaultScene {
     return findSceneById(defaultDetail!.firstScene)!;
@@ -19,7 +19,7 @@ class TourDetail {
   factory TourDetail.fromJson(Map<String, dynamic> json) {
     return TourDetail(
       json['tourId'],
-      TourMetadata.fromJson(json['metadata']),
+      json['title'],
       json['scenes']?.map((scene) => SceneDetail.fromJson(scene)).toList().cast<SceneDetail>(), 
       json.containsKey('default') ? DefaultDetail.fromJson(json['default']) : null
     );
@@ -31,17 +31,6 @@ class TourDetail {
     } else {
       return null;
     }
-  }
-}
-
-class TourMetadata { 
-  final String title;
-  final String? thumbnail;
-
-  TourMetadata(this.title, this.thumbnail);
-
-  factory TourMetadata.fromJson(Map<String, dynamic> json) {
-    return TourMetadata(json['title'], json.containsKey('thumbnail') ? json['thumbnail'] : null);
   }
 }
 
@@ -59,15 +48,17 @@ class SceneDetail {
   final String sceneId;
   final String? title;
   final String panorama;
+  final String? thumbnail;
   final List<HotspotDetail> hotspots;
 
-  SceneDetail(this.sceneId, this.title, this.panorama, this.hotspots);
+  SceneDetail(this.sceneId, this.title, this.panorama, this.thumbnail, this.hotspots);
 
   factory SceneDetail.fromJson(Map<String, dynamic> json) {
     return SceneDetail(
       json['sceneId'], 
       json.containsKey('title') ? json['title'] : null, 
       json['panorama'], 
+      json.containsKey('thumbnail') ? json['thumbnail'] : null,
       json['hotSpots'].map((hotspot) => HotspotDetail.fromJson(hotspot)).toList().cast<HotspotDetail>()
     );
   }
