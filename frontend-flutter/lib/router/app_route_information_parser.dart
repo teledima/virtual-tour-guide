@@ -19,6 +19,14 @@ class AppRouteInformationParser extends RouteInformationParser<AppConfiguration>
       if (first == 'tour' && second.isNotEmpty) {
         return AppConfiguration.pano(await tourRepository.fetchTour(second));
       }
+    } else if (uri.pathSegments.length == 3) {
+      final String first = uri.pathSegments[0];
+      final String second = uri.pathSegments[1];
+      final String third = uri.pathSegments[2];
+
+      if (first == 'tour' && second.isNotEmpty && third == 'scenes') {
+        return AppConfiguration.panoScenes(await tourRepository.fetchTour(second));
+      }
     }
     return AppConfiguration.home();
   }
@@ -27,9 +35,11 @@ class AppRouteInformationParser extends RouteInformationParser<AppConfiguration>
   RouteInformation? restoreRouteInformation(AppConfiguration configuration) {
     if (configuration.isHomePage) {
       return const RouteInformation(location: '/');
+    } else if (configuration.isShowScenes) {
+      return RouteInformation(location: '/tour/${configuration.currentTour!.tourId}/scenes');
     } else if (configuration.isPanoPage) {
       return RouteInformation(location: '/tour/${configuration.currentTour!.tourId}');
-    } else {
+    }  else {
       return const RouteInformation(location: '/');
     }
   }

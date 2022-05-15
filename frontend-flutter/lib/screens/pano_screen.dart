@@ -15,7 +15,13 @@ class PanoScreen extends StatefulWidget {
   final HotspotRepository hotspotRepository = HotspotRepository();
 
   final TourDetail currentTour;
-  PanoScreen({Key? key, required this.currentTour}): super(key: key);
+
+  final Function() onShowScenes;
+  PanoScreen({
+    Key? key, 
+    required this.currentTour,
+    required this.onShowScenes
+  }): super(key: key);
 
   @override
   PanoScreenState createState() => PanoScreenState();
@@ -83,12 +89,18 @@ class PanoScreenState extends State<PanoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     return FutureBuilder(
       future: _currentTour,
       builder: (context, AsyncSnapshot<TourDetail> snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(title: Text(snapshot.data!.metadata.title)),
+            appBar: AppBar(
+              title: Text(snapshot.data!.metadata.title),
+              actions: [
+                TextButton(style: style, onPressed: widget.onShowScenes, child: const Text('Scenes'))
+              ],
+            ),
             body: Panorama(
               child: Image.network('http://192.168.1.44:8080/images/${_currentScene.panorama}'),
               hotspots: [
