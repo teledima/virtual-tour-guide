@@ -1,6 +1,5 @@
 // Flutter
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 // Application
 import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/data/hotspot_repository.dart';
@@ -54,15 +53,11 @@ class PanoScreenState extends State<PanoScreen> {
     });
   }
 
-  onAddImage() async {
+  onAddHotspot() async {
     showDialog(
       context: context, 
       builder: (_) => const AddHotspotDialog()
     );
-    /*
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    */
   }
 
   onTapHotspot(TourDetail tour, HotspotDetail hotspot) {
@@ -147,7 +142,7 @@ class PanoScreenState extends State<PanoScreen> {
               },
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: onAddImage,
+              onPressed: onAddHotspot,
               backgroundColor: Colors.green,
               child: const Icon(Icons.add),
               mini: true,

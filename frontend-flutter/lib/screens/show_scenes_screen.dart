@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Application
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/widgets/scene_card.dart';
+import 'package:frontend_flutter/screens/add_scene_dialog.dart';
 
 class ShowScenesScreen extends StatefulWidget {
   final TourDetail tour;
@@ -16,6 +17,13 @@ class ShowScenesScreen extends StatefulWidget {
 }
 
 class ShowScenesScreenState extends State<ShowScenesScreen> {
+  onAddScene() {
+    showDialog(
+      context: context, 
+      builder: (_) => const AddSceneDialog()
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [
@@ -25,6 +33,12 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Scenes')),
       body: GridView.extent(maxCrossAxisExtent: 360, children: children,),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onAddScene,
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
+        mini: true,
+      ),
     );
   }
 }
