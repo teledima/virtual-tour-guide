@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // Application
 import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/models.dart';
-import 'package:frontend_flutter/widgets/tours_list.dart';
+import 'package:frontend_flutter/widgets/tour_card.dart';
 
 class HomeScreen extends StatefulWidget {
   final TourRepository tourRepository = TourRepository();
@@ -27,12 +27,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Виртуальный экскурсовод'),),
+      appBar: AppBar(title: const Text('Виртуальный экскурсовод'),),
       body: FutureBuilder(
         future: _listTours,
         builder: (context, AsyncSnapshot<List<TourDetail>> snapshot) {
           if (snapshot.hasData) {
-            return ToursList(toursList: snapshot.data!, onTourSelected: widget.onTourSelected);
+            final List<Widget> children = [ 
+              for (TourDetail tour in snapshot.data!) 
+                TourCard(tour: tour, onTourSelected: widget.onTourSelected) 
+            ];
+            return GridView.extent(maxCrossAxisExtent: 360, children: children,);
           } else {
             return const Center(child: Text('Loading...'));
           }

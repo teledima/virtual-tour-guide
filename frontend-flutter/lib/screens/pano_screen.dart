@@ -154,7 +154,7 @@ class PanoScreenState extends State<PanoScreen> {
             ),
           );
         } else {
-          return const Center(child: Text('Loading...'),);
+          return const Scaffold(body: Center(child: Text('Loading...'),));
         }
       }
     );
