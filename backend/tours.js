@@ -21,8 +21,6 @@ router.get('/:tour', async(req, res) => {
         if (ObjectId.isValid(tour)) {
             const cursor = tourCollection.aggregate([
                 { $match: { _id: new ObjectId(tour) } },
-                { $set: { tourId: '$_id' } },
-                { $project: { _id: false } }
             ])
 
             let result = {}
