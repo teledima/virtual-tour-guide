@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:frontend_flutter/models.dart';
 
 class TourRepository {
-  static String serverName = 'http://192.168.1.44:8080';
+  static String entrypoint = 'http://192.168.1.44:8080/tours';
 
   Future<List<TourDetail>> fetchTours() async {
-    final response = await http.get(Uri.parse('$serverName/tours/all'));
+    final response = await http.get(Uri.parse('$entrypoint/all'));
     
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
@@ -20,7 +20,7 @@ class TourRepository {
   } 
 
   Future<TourDetail> fetchTour(String tourId) async {
-    final response = await http.get(Uri.parse('$serverName/tours/$tourId'));
+    final response = await http.get(Uri.parse('$entrypoint/$tourId'));
     
     if (response.statusCode == 200) {
       final tour = TourDetail.fromJson(jsonDecode(response.body));

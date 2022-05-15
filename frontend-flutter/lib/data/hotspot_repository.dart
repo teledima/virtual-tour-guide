@@ -6,11 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:frontend_flutter/models.dart';
 
 class HotspotRepository {
-  static String serverName = 'http://192.168.1.44:8080';
+  static String entrypoint = 'http://192.168.1.44:8080/hotspots';
 
   Future<UpdateResult> deleteHotspot(TourDetail tour, SceneDetail currentScene, HotspotDetail hotspot) async{
     final response = await http.delete(
-      Uri.parse('$serverName/hotspots'), 
+      Uri.parse(entrypoint), 
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({"tourId": tour.tourId, "sceneFrom": currentScene.sceneId, "sceneTo": hotspot.sceneId })
     );
@@ -23,7 +23,7 @@ class HotspotRepository {
     double newLatitude, double newLongtitude
   ) async {
     final response = await http.patch(
-      Uri.parse('$serverName/hotspots'), 
+      Uri.parse(entrypoint), 
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         "tourId": tour.tourId, 
