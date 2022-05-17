@@ -10,8 +10,12 @@ import 'package:frontend_flutter/data/image_repository.dart';
 
 class AddSceneDialog extends StatefulWidget {
   final ImageRepository imageRepository = ImageRepository();
+  final String tourId;
 
-  AddSceneDialog({Key? key}): super(key: key);
+  AddSceneDialog({
+    Key? key,
+    required this.tourId
+  }): super(key: key);
 
   @override
   AddSceneDialogState createState() => AddSceneDialogState();
@@ -40,13 +44,23 @@ class AddSceneDialogState extends State<AddSceneDialog> {
   onSubmitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await widget.imageRepository.sendImage(
+        final res = await widget.imageRepository.sendImage(
+          widget.tourId,
           await _imageFieldKey.currentState!.value!.bytes, 
           sceneNameController.text, 
           MediaType.parse(_imageFieldKey.currentState!.value!.mimeType)
         );
-        Navigator.of(context).pop();
-      } on DioError catch(e){
+        if (res.modifiedCount > 0) {
+          Navigator.of(context).pop();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('tour not found')
+            )
+          );
+        }
+        
+      } on DioError catch(e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${e.message}\n${e.response.toString()}')

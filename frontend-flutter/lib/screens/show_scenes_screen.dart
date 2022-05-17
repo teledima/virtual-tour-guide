@@ -20,7 +20,7 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
   onAddScene() {
     showDialog(
       context: context, 
-      builder: (_) => AddSceneDialog()
+      builder: (_) => AddSceneDialog(tourId: widget.tour.tourId)
     );
   }
 

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const minio = require('minio')
+const { ObjectId } = require('mongodb')
 const mime = require('mime-types')
 
 const multer = require('multer')
@@ -9,8 +10,9 @@ const storage = multer.memoryStorage()
 const uploadMemory = multer({storage: storage})
 
 const createThumbnail = require('./utils/thumbnail');
+let { mongoClient, db_name } = require('./utils/mongo');
 
-let client = new minio.Client({
+let minioClient = new minio.Client({
     endPoint: 'localhost',
     port: 9000,
     useSSL: false,
@@ -18,49 +20,79 @@ let client = new minio.Client({
     secretKey: 'minio-admin'
 })
 
+const tourCollection = mongoClient.db(db_name).collection('tours')
+
 router.get('/:image', (req, res) => {
-    client.getObject('demo-images', req.params.image, function(err, stream) {
+    minioClient.getObject('demo-images', req.params.image, function(err, stream) {
         if (err)
             return console.log(err)
 
         let data = []
         stream.on('data', (chunk) => data.push(chunk))
         stream.on('end', () => {
-            client.getObjectTagging('demo-images', req.params.image, (err, tags) => {
-                const content_type = tags.find((item) => item.Key === 'content-type').Value
-                res.status(200).type(content_type).send(Buffer.concat(data))
-            })
+            res.status(200).type(mime.contentType(req.params.image)).send(Buffer.concat(data));
         })
         stream.on('error', (err) => console.log(err))
     })
 })
 
-router.post('/', uploadMemory.single('image'),(req, res) => {
-    client.putObject(
-        'demo-images', 
-        req.file.originalname+`.${mime.extension(req.file.mimetype)}`, 
-        req.file.buffer, 
-        req.file.size,
-        { 'content-type': req.file.mimetype },
-        async (err, putRes) => {
-            if (err) {
-                res.status(500).send(err.message)
-            } else {
-                try {
-                    const thumbnail = await createThumbnail(req.file.buffer);
-                    client.putObject(
-                        'demo-images', 
-                        req.file.originalname+`_thumbnail.${mime.extension(req.file.mimetype)}`, 
-                        thumbnail,
-                        { 'content-type': req.file.mimetype }
-                    )
-                    res.status(200).send();
-                } catch(e) {
-                    res.status(500).send(e.message)
-                }
+router.post('/', uploadMemory.single('image'), async(req, res) => {
+    const imageName = new ObjectId().toHexString();
+    const imageNameExt = imageName+`.${mime.extension(req.file.mimetype)}`;
+    const thumbnailNameExt = imageName+`_thumbnail.${mime.extension(req.file.mimetype)}`;
+
+    try {
+        const uploadPanoRes = await minioClient.putObject(
+            'demo-images', 
+            imageNameExt, 
+            req.file.buffer, 
+            req.file.size,
+            { 'content-type': req.file.mimetype }
+        );
+
+        mongoClient = await mongoClient.connect();
+    } catch(e) {
+        res.status(500).send(e.message);
+        return;
+    }
+
+
+    const sceneId = new ObjectId();
+    let thumbnailPutRes = null;
+    let thumbnailErr = null 
+
+    try {
+        const thumbnail = await createThumbnail(req.file.buffer);
+        thumbnailPutRes = await minioClient.putObject(
+            'demo-images', 
+            thumbnailNameExt, 
+            thumbnail,
+            { 'content-type': req.file.mimetype },
+        )
+    } catch(e) {
+        thumbnailErr = e
+    };
+
+    try {
+        const updateRes = await tourCollection.updateOne(
+            { _id: new ObjectId(req.body['tourId']) },
+            { $push: { 
+                scenes: { 
+                    sceneId: sceneId, 
+                    title: req.file.originalname, 
+                    panorama: imageNameExt,
+                    thumbnail: thumbnailPutRes !== null ? thumbnailNameExt : null,
+                    hotSpots: []
+                } } 
             }
-        },
-    );
+        )
+        res.status(200).send(updateRes)
+    } catch(e) {
+        res.status(500).send(e.message);
+    } finally {
+        mongoClient.close();
+    }
+    
 })
 
 module.exports = router
