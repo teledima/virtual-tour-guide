@@ -8,9 +8,9 @@ import 'package:frontend_flutter/models.dart';
 class ScenesRepository {
   static String entrypoint = 'http://192.168.1.44:8080/scenes';
 
-  Future<UpdateResult> sendImage(String tourId, Uint8List bytes, String filename, MediaType contentType) async {
+  Future<UpdateResult> create(String tourId, Uint8List bytes, String sceneName, MediaType contentType) async {
     final formData = FormData.fromMap({
-      "image": MultipartFile.fromBytes(bytes, filename: filename, contentType: contentType),
+      "image": MultipartFile.fromBytes(bytes, filename: sceneName, contentType: contentType),
       "tourId": tourId
     });
     

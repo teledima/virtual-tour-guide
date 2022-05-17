@@ -44,7 +44,7 @@ class AddSceneDialogState extends State<AddSceneDialog> {
   onSubmitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        final res = await widget.imageRepository.sendImage(
+        final res = await widget.imageRepository.create(
           widget.tourId,
           await _imageFieldKey.currentState!.value!.bytes, 
           sceneNameController.text, 
