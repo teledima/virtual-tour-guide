@@ -7,9 +7,11 @@ import 'package:frontend_flutter/screens/add_scene_dialog.dart';
 
 class ShowScenesScreen extends StatefulWidget {
   final TourDetail tour;
+  final Function() onReloadScenes;
   const ShowScenesScreen({
     Key? key,
-    required this.tour
+    required this.tour,
+    required this.onReloadScenes
   }): super(key: key);
 
   @override
@@ -17,11 +19,12 @@ class ShowScenesScreen extends StatefulWidget {
 }
 
 class ShowScenesScreenState extends State<ShowScenesScreen> {
-  onAddScene() {
-    showDialog(
+  onAddScene() async {
+    await showDialog(
       context: context, 
       builder: (_) => AddSceneDialog(tourId: widget.tour.tourId)
     );
+    widget.onReloadScenes();
   }
 
   @override

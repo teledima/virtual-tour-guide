@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // Application
 import 'package:frontend_flutter/models.dart';
+import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/router/app_configuration.dart';
 import 'package:frontend_flutter/router/pages/show_scenes_page.dart';
 import 'pages/home_page.dart';
@@ -9,6 +10,7 @@ import 'pages/pano_page.dart';
 
 class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   final GlobalKey<NavigatorState> _navigatorKey;
+  final TourRepository _tourRepository = TourRepository();
 
   @override
   GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;
@@ -41,7 +43,11 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
           currentTour: currentTour!, 
           onShowScenes: () => showScenes = true
         ),
-        if (showScenes == true && currentTour != null) ShowScenesPage(tour: currentTour!),
+        if (showScenes == true && currentTour != null) 
+          ShowScenesPage(
+            tour: currentTour!, 
+            onReloadScenes: () async => currentTour = await _tourRepository.fetchTour(currentTour!.tourId)
+          ),
       ],
       onPopPage: (route, result) {
         if (!route.didPop(result)) return false;
