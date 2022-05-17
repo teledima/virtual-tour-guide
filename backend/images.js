@@ -1,6 +1,12 @@
 const express = require('express')
-const minio = require('minio')
 const router = express.Router()
+
+const minio = require('minio')
+const mime = require('mime-types')
+
+const multer = require('multer')
+const storage = multer.memoryStorage()
+const uploadMemory = multer({storage: storage})
 
 let client = new minio.Client({
     endPoint: 'localhost',
@@ -18,14 +24,30 @@ router.get('/:image', (req, res) => {
         let data = []
         stream.on('data', (chunk) => data.push(chunk))
         stream.on('end', () => {
-            let content_type = null
             client.getObjectTagging('demo-images', req.params.image, (err, tags) => {
-                content_type = tags.find((item) => item.Key === 'content-type').Value
+                const content_type = tags.find((item) => item.Key === 'content-type').Value
                 res.status(200).type(content_type).send(Buffer.concat(data))
             })
         })
         stream.on('error', (err) => console.log(err))
     })
+})
+
+router.post('/', uploadMemory.single('image'),(req, res) => {
+    client.putObject(
+        'demo-images', 
+        req.file.originalname+`.${mime.extension(req.file.mimetype)}`, 
+        req.file.buffer, 
+        req.file.size,
+        { 'content-type': req.file.mimetype },
+        (err, putRes) => {
+            if (err) {
+                res.status(500).send(err.message)
+            } else {
+                res.status(200).send();
+            }
+        },
+    );
 })
 
 module.exports = router

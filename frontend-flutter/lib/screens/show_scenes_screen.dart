@@ -20,7 +20,7 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
   onAddScene() {
     showDialog(
       context: context, 
-      builder: (_) => const AddSceneDialog()
+      builder: (_) => AddSceneDialog()
     );
   }
 
