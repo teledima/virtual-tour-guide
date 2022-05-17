@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 // Application
 import 'package:frontend_flutter/models.dart';
+import 'package:frontend_flutter/data/tour_repository.dart';
 
 class SceneCard extends StatelessWidget {
   final SceneDetail scene;
+  final String tourId;
+  final TourRepository tourRepository = TourRepository();
 
   Image get thumbnail {
     if (scene.thumbnail == null) {
@@ -14,10 +17,14 @@ class SceneCard extends StatelessWidget {
     }
   }
 
-  const SceneCard({Key? key, required this.scene}): super(key: key);
+  SceneCard({
+    Key? key, 
+    required this.scene,
+    required this.tourId
+  }): super(key: key);
 
-  void onSetDefaultScene() {
-
+  void onSetDefaultScene() async {
+    await tourRepository.updateDefaultScene(tourId, scene.sceneId);
   }
 
   @override

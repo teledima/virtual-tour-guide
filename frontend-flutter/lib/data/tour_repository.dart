@@ -30,4 +30,22 @@ class TourRepository {
       throw Exception("Failed to load tour detail");
     }
   }
+
+  Future<UpdateResult> updateDefaultScene(String tourId, String sceneId) async{
+    final response = await http.patch(
+      Uri.parse(entrypoint),
+      headers: {'Content-Type': 'application/json'}, 
+      body: jsonEncode({
+        "tourId": tourId,
+        "updateBody": { "default": {"firstScene": sceneId} }
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return UpdateResult.fromJson(jsonDecode(response.body));
+    }
+    else {
+      throw Exception("Failed to load tour detail");
+    }
+  }
 }

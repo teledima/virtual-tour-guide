@@ -32,7 +32,7 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
   Widget build(BuildContext context) {
     final List<Widget> children = [
       for (var scene in widget.tour.scenes!)
-        SceneCard(scene: scene)
+        SceneCard(tourId: widget.tour.tourId, scene: scene)
     ];
     return Scaffold(
       appBar: AppBar(title: const Text('Scenes')),

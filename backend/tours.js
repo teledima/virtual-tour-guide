@@ -39,4 +39,26 @@ router.get('/:tour', async(req, res) => {
     }
 })
 
+router.patch('/', async(req, res) => {
+    mongoClient = await mongoClient.connect();
+
+    const body = req.body['updateBody']
+    let updateBody = {}
+    if ('title' in body) {
+        updateBody['title'] = body['title'];
+    } 
+    if ('default' in body) {
+        updateBody['default'] = {};
+        if ('firstScene' in body['default']) {
+            updateBody['default']['firstScene'] = new ObjectId(body['default']['firstScene'])
+        }
+    }
+
+    const updateRes = await tourCollection.updateOne(
+        { _id: new ObjectId(req.body['tourId']) },
+        { $set: updateBody }
+    );
+    res.status(200).send(updateRes);
+})
+
 module.exports = router
