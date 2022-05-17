@@ -16,6 +16,10 @@ class SceneCard extends StatelessWidget {
 
   const SceneCard({Key? key, required this.scene}): super(key: key);
 
+  void onSetDefaultScene() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -25,11 +29,27 @@ class SceneCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Center(child: Text(scene.title ?? 'No title', style: const TextStyle(fontWeight: FontWeight.bold))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    scene.title ?? 'No title', 
+                    style: const TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center,
+                  )
+                ),
+                PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    child: const Text('Начальная сцена'),
+                    onTap: onSetDefaultScene,
+                  )
+                ])
+              ]
+            ),
             const SizedBox(height: 8),
-            thumbnail
+            thumbnail,
           ]
-        )
+        ),
       ),
     );
   }

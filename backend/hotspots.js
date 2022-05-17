@@ -2,9 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { ObjectId } = require('mongodb')
-let { mongoClient, db_name} = require('./utils/mongo')
-
-const tourCollection = mongoClient.db(db_name).collection('tours')
+let { mongoClient, tourCollection} = require('./utils/mongo')
 
 router.delete('/', async(req, res) => {
     const body = req.body;
