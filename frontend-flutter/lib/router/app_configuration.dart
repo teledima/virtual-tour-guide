@@ -17,6 +17,6 @@ class AppConfiguration {
       showScenes = true;
 
   bool get isHomePage => currentTour == null;
-  bool get isPanoPage => currentTour != null;
+  bool get isPanoPage => currentTour != null && showScenes == false;
   bool get isShowScenes => currentTour != null && showScenes == true;
 }
