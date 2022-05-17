@@ -8,6 +8,8 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const uploadMemory = multer({storage: storage})
 
+const createThumbnail = require('./utils/thumbnail');
+
 let client = new minio.Client({
     endPoint: 'localhost',
     port: 9000,
@@ -40,11 +42,22 @@ router.post('/', uploadMemory.single('image'),(req, res) => {
         req.file.buffer, 
         req.file.size,
         { 'content-type': req.file.mimetype },
-        (err, putRes) => {
+        async (err, putRes) => {
             if (err) {
                 res.status(500).send(err.message)
             } else {
-                res.status(200).send();
+                try {
+                    const thumbnail = await createThumbnail(req.file.buffer);
+                    client.putObject(
+                        'demo-images', 
+                        req.file.originalname+`_thumbnail.${mime.extension(req.file.mimetype)}`, 
+                        thumbnail,
+                        { 'content-type': req.file.mimetype }
+                    )
+                    res.status(200).send();
+                } catch(e) {
+                    res.status(500).send(e.message)
+                }
             }
         },
     );

@@ -27,7 +27,7 @@ class AddSceneDialogState extends State<AddSceneDialog> {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      state.didChange(ImageField(image.readAsBytes(), image.mimeType!));
+      state.didChange(ImageField(image.readAsBytes(), image.mimeType ?? 'image/jpeg'));
 
       if (sceneNameController.text.isEmpty) {
         setState(() {
@@ -62,7 +62,7 @@ class AddSceneDialogState extends State<AddSceneDialog> {
       title: const Text('Добавить сцену'),
       content: Form(
         key: _formKey,
-        child: Column(
+        child: SingleChildScrollView(child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             FormField<ImageField?>(
@@ -85,7 +85,7 @@ class AddSceneDialogState extends State<AddSceneDialog> {
                       }
                     )
                   else 
-                    Image.asset('assets/image_not_found.jpeg', width: 400, height: 225, fit: BoxFit.contain),
+                    Image.asset('assets/image_not_found.jpeg', fit: BoxFit.contain),
                   if (formFieldState.hasError) 
                     Padding(
                       padding: const EdgeInsets.only(left: 8, top: 10),
@@ -123,26 +123,22 @@ class AddSceneDialogState extends State<AddSceneDialog> {
                 isDense: true,
                 border: OutlineInputBorder()
               ),
-            ),
-            const SizedBox(height: 8,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.grey
-                  ),
-                  onPressed: () => Navigator.of(context).pop(), 
-                  child: const Text('Отмена')
-                ),
-                const SizedBox(width: 8,),
-                ElevatedButton(onPressed: onSubmitForm, child: const Text('Добавить'))
-              ],
             )
             
           ],
-        )
-      )
+        ))
+      ),
+      actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.grey
+          ),
+          onPressed: () => Navigator.of(context).pop(), 
+          child: const Text('Отмена')
+        ),
+        const SizedBox(width: 8,),
+        ElevatedButton(onPressed: onSubmitForm, child: const Text('Добавить'))       
+      ],
     );
   }
 }
