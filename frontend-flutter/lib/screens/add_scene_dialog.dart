@@ -51,7 +51,7 @@ class AddSceneDialogState extends State<AddSceneDialog> {
           MediaType.parse(_imageFieldKey.currentState!.value!.mimeType)
         );
         if (res.modifiedCount > 0) {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(true);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -68,6 +68,10 @@ class AddSceneDialogState extends State<AddSceneDialog> {
         );
       }
     }
+  }
+
+  onCancelForm() {
+    Navigator.of(context).pop(false);
   }
 
   @override
@@ -147,7 +151,7 @@ class AddSceneDialogState extends State<AddSceneDialog> {
           style: ElevatedButton.styleFrom(
             primary: Colors.grey
           ),
-          onPressed: () => Navigator.of(context).pop(), 
+          onPressed: onCancelForm, 
           child: const Text('Отмена')
         ),
         const SizedBox(width: 8,),

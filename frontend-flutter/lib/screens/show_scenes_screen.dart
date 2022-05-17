@@ -20,11 +20,12 @@ class ShowScenesScreen extends StatefulWidget {
 
 class ShowScenesScreenState extends State<ShowScenesScreen> {
   onAddScene() async {
-    await showDialog(
+    final reload = await showDialog<bool>(
       context: context, 
       builder: (_) => AddSceneDialog(tourId: widget.tour.tourId)
     );
-    widget.onReloadScenes();
+    
+    if (reload ?? false) widget.onReloadScenes();
   }
 
   @override
