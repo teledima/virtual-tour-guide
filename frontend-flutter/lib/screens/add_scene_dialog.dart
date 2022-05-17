@@ -6,10 +6,10 @@ import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 // Application
-import 'package:frontend_flutter/data/image_repository.dart';
+import 'package:frontend_flutter/data/scenes_repository.dart';
 
 class AddSceneDialog extends StatefulWidget {
-  final ImageRepository imageRepository = ImageRepository();
+  final ScenesRepository imageRepository = ScenesRepository();
   final String tourId;
 
   AddSceneDialog({

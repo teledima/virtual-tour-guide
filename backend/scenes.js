@@ -66,6 +66,7 @@ router.post('/', uploadMemory.single('image'), async(req, res) => {
         res.status(500).send(e.message);
     } finally {
         mongoClient.close();
-    }
-    
+    }  
 })
+
+module.exports = router;
