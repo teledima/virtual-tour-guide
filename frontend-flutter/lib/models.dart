@@ -8,7 +8,7 @@ class TourDetail {
   final String tourId;
   final String title;
   final List<SceneDetail>? scenes;
-  final DefaultDetail? defaultDetail;
+  DefaultDetail? defaultDetail;
 
   TourDetail(this.tourId, this.title, this.scenes, this.defaultDetail);
 

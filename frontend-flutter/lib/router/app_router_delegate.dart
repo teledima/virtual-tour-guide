@@ -58,7 +58,8 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
             onOpenScene: (SceneDetail scene) { 
               currentScene = scene;
               showScenes = false;
-            }
+            },
+            onSetDefaultScene: (String sceneId) => currentTour!.defaultDetail = DefaultDetail(sceneId)
           ),
       ],
       onPopPage: (route, result) {

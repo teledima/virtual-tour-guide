@@ -9,12 +9,14 @@ class ShowScenesScreen extends StatefulWidget {
   final TourDetail tour;
   final Function() onReloadScenes;
   final Function(SceneDetail) onOpenScene;
+  final Function(String) onSetDefaultScene;
 
   const ShowScenesScreen({
     Key? key,
     required this.tour,
     required this.onReloadScenes,
-    required this.onOpenScene
+    required this.onOpenScene,
+    required this.onSetDefaultScene
   }): super(key: key);
 
   @override
@@ -35,7 +37,12 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
   Widget build(BuildContext context) {
     final List<Widget> children = [
       for (var scene in widget.tour.scenes!)
-        SceneCard(tourId: widget.tour.tourId, scene: scene, onOpenScene: widget.onOpenScene,)
+        SceneCard(
+          tourId: widget.tour.tourId, 
+          scene: scene, 
+          onOpenScene: widget.onOpenScene,
+          onSetDefaultScene: widget.onSetDefaultScene
+        )
     ];
     return Scaffold(
       appBar: AppBar(title: const Text('Scenes')),

@@ -10,6 +10,7 @@ class SceneCard extends StatelessWidget {
   final TourRepository tourRepository = TourRepository();
 
   final Function(SceneDetail) onOpenScene;
+  final Function(String) onSetDefaultScene;
 
   Image get thumbnail {
     if (scene.thumbnail == null) {
@@ -23,11 +24,13 @@ class SceneCard extends StatelessWidget {
     Key? key, 
     required this.scene,
     required this.tourId,
-    required this.onOpenScene
+    required this.onOpenScene,
+    required this.onSetDefaultScene
   }): super(key: key);
 
-  onSetDefaultScene() async {
+  onSetDefaultSceneTap() async {
     await tourRepository.updateDefaultScene(tourId, scene.sceneId);
+    onSetDefaultScene(scene.sceneId);
   }
 
   @override
@@ -53,7 +56,7 @@ class SceneCard extends StatelessWidget {
                   PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
                     PopupMenuItem(
                       child: const Text('Начальная сцена'),
-                      onTap: onSetDefaultScene,
+                      onTap: onSetDefaultSceneTap,
                     )
                   ])
                 ]
