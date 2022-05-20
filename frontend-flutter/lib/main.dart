@@ -1,8 +1,8 @@
 // Flutter
 import 'package:flutter/material.dart';
 // Application
-import 'package:frontend_flutter/router/app_route_information_parser.dart';
-import 'package:frontend_flutter/router/app_router_delegate.dart';
+import 'package:frontend_flutter/router/app_router/app_route_information_parser.dart';
+import 'package:frontend_flutter/router/app_router/app_router_delegate.dart';
 
 void main() {
   runApp(App());

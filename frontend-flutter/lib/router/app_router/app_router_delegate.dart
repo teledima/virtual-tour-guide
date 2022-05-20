@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 // Application
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/data/tour_repository.dart';
-import 'package:frontend_flutter/router/app_configuration.dart';
-import 'package:frontend_flutter/router/pages/show_scenes_page.dart';
+import 'package:frontend_flutter/router/app_router/app_configuration.dart';
+import 'package:frontend_flutter/router/app_router/pages/show_scenes_page.dart';
 import 'pages/home_page.dart';
 import 'pages/pano_page.dart';
 
