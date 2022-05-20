@@ -9,6 +9,8 @@ class SceneCard extends StatelessWidget {
   final String tourId;
   final TourRepository tourRepository = TourRepository();
 
+  final Function(SceneDetail) onOpenScene;
+
   Image get thumbnail {
     if (scene.thumbnail == null) {
       return Image.asset('assets/image_not_found.jpeg', fit: BoxFit.contain);
@@ -20,43 +22,47 @@ class SceneCard extends StatelessWidget {
   SceneCard({
     Key? key, 
     required this.scene,
-    required this.tourId
+    required this.tourId,
+    required this.onOpenScene
   }): super(key: key);
 
-  void onSetDefaultScene() async {
+  onSetDefaultScene() async {
     await tourRepository.updateDefaultScene(tourId, scene.sceneId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        clipBehavior: Clip.none,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    scene.title ?? 'No title', 
-                    style: const TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center,
-                  )
-                ),
-                PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
-                  PopupMenuItem(
-                    child: const Text('Начальная сцена'),
-                    onTap: onSetDefaultScene,
-                  )
-                ])
-              ]
-            ),
-            const SizedBox(height: 8),
-            thumbnail,
-          ]
-        ),
+      child: GestureDetector (
+        onTap: () => onOpenScene(scene),
+        child: Container(
+          clipBehavior: Clip.none,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      scene.title ?? 'No title', 
+                      style: const TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center,
+                    )
+                  ),
+                  PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
+                    PopupMenuItem(
+                      child: const Text('Начальная сцена'),
+                      onTap: onSetDefaultScene,
+                    )
+                  ])
+                ]
+              ),
+              const SizedBox(height: 8),
+              thumbnail,
+            ]
+          ),
+        )
       ),
     );
   }

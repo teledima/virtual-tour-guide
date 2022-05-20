@@ -14,11 +14,13 @@ class PanoScreen extends StatefulWidget {
   final HotspotRepository hotspotRepository = HotspotRepository();
 
   final TourDetail currentTour;
+  final SceneDetail? currentScene;
 
   final Function() onShowScenes;
   PanoScreen({
     Key? key, 
     required this.currentTour,
+    this.currentScene,
     required this.onShowScenes
   }): super(key: key);
 
@@ -48,9 +50,13 @@ class PanoScreenState extends State<PanoScreen> {
   void initState() {
     super.initState();
     _currentTour = widget.tourRepository.fetchTour(widget.currentTour.tourId);
-    _currentTour.then((tour) {
-      _currentScene = tour.defaultScene;
-    });
+    if (widget.currentScene != null) {
+      _currentScene = widget.currentScene!;
+    } else {
+      _currentTour.then((tour) {
+        _currentScene = tour.defaultScene;
+      });
+    }
   }
 
   onAddHotspot() async {

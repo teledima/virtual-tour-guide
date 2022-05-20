@@ -8,10 +8,13 @@ import 'package:frontend_flutter/screens/add_scene_dialog.dart';
 class ShowScenesScreen extends StatefulWidget {
   final TourDetail tour;
   final Function() onReloadScenes;
+  final Function(SceneDetail) onOpenScene;
+
   const ShowScenesScreen({
     Key? key,
     required this.tour,
-    required this.onReloadScenes
+    required this.onReloadScenes,
+    required this.onOpenScene
   }): super(key: key);
 
   @override
@@ -32,7 +35,7 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
   Widget build(BuildContext context) {
     final List<Widget> children = [
       for (var scene in widget.tour.scenes!)
-        SceneCard(tourId: widget.tour.tourId, scene: scene)
+        SceneCard(tourId: widget.tour.tourId, scene: scene, onOpenScene: widget.onOpenScene,)
     ];
     return Scaffold(
       appBar: AppBar(title: const Text('Scenes')),

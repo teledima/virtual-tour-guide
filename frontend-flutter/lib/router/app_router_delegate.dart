@@ -31,6 +31,13 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
     notifyListeners();
   }
 
+  SceneDetail? _currentScene;
+  SceneDetail? get currentScene => _currentScene;
+  set currentScene(SceneDetail? value) {
+    _currentScene = value;
+    notifyListeners();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -40,13 +47,18 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
           onTourSelected: (tour) => currentTour = tour
         ),
         if (currentTour != null) PanoPage(
-          currentTour: currentTour!, 
+          currentTour: currentTour!,
+          currentScene: currentScene,
           onShowScenes: () => showScenes = true
         ),
         if (showScenes == true && currentTour != null) 
           ShowScenesPage(
             tour: currentTour!, 
-            onReloadScenes: () async => currentTour = await _tourRepository.fetchTour(currentTour!.tourId)
+            onReloadScenes: () async => currentTour = await _tourRepository.fetchTour(currentTour!.tourId),
+            onOpenScene: (SceneDetail scene) { 
+              currentScene = scene;
+              showScenes = false;
+            }
           ),
       ],
       onPopPage: (route, result) {
@@ -54,7 +66,13 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
         if (showScenes) { 
           showScenes = false;
         } else if (currentTour != null) {
-          currentTour = null;
+          if (currentScene != null) {
+            showScenes = true;
+            currentScene = null;
+          } else {
+            currentTour = null;
+            currentScene = null;
+          }
         }
         return true;
       },
@@ -84,7 +102,7 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
       return AppConfiguration.home();
     } else if (currentTour != null) {
       if (!showScenes) {
-        return AppConfiguration.pano(currentTour!);
+        return AppConfiguration.pano(currentTour!, currentScene);
       } else {
         return AppConfiguration.panoScenes(currentTour!);
       }
