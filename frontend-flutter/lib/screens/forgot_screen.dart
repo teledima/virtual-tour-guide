@@ -1,12 +1,37 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class ForgotScreen extends StatelessWidget {
-  const ForgotScreen({Key? key}): super(key: key);
+  ForgotScreen({Key? key}): super(key: key);
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  sendResetRequest(BuildContext context) {
+    Timer timer = Timer(const Duration(seconds: 5), () => Navigator.of(context, rootNavigator: true).pop()); 
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const SimpleDialog(
+          title: Text('Сброс пароля'),
+          children: [
+            Center(child: Text('Пароль сброшен'),)
+          ],
+        );
+      }
+    ).then((value) => timer.cancel());
+  }
+
+  onSubmitForm(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      sendResetRequest(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
+        key: _formKey,
         child: Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 500),
@@ -27,10 +52,11 @@ class ForgotScreen extends StatelessWidget {
                     hintText: 'example@example.com',
                     border: OutlineInputBorder()
                   ),
+                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите почту',
                 ),
                 const SizedBox(height: 16,),
                 TextButton(
-                  onPressed: () => print('restore'), 
+                  onPressed: () => onSubmitForm(context), 
                   child: const Text('Сбросить пароль'),
                   style: TextButton.styleFrom(
                     primary: Colors.white,

@@ -8,7 +8,7 @@ class CreateAccountPage extends Page {
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
       settings: this,
-      builder: (_) => const CreateAccountScreen()
+      builder: (_) => CreateAccountScreen()
     );
   }
 }

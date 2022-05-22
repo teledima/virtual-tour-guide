@@ -10,7 +10,7 @@ class ForgotPage extends Page {
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
       settings: this,
-      builder: (_) => const ForgotScreen()
+      builder: (_) => ForgotScreen()
     );
   }
 }

@@ -1,13 +1,38 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/widgets/password_field.dart';
+import 'package:frontend_flutter/widgets/password_form_field.dart';
 
 class CreateAccountScreen extends StatelessWidget {
-  const CreateAccountScreen({Key? key}): super(key: key);
+  CreateAccountScreen({Key? key}): super(key: key);
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  sendAccountCreateRequest(BuildContext context) {
+    Timer timer = Timer(const Duration(seconds: 5), () => Navigator.of(context, rootNavigator: true).popUntil((route) => false)); 
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const SimpleDialog(
+          title: Text('Регистрация'),
+          children: [
+            Center(child: Text('Аккаунт создан'),)
+          ],
+        );
+      }
+    ).then((value) => timer.cancel());
+  }
+
+  onSubmitForm(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      sendAccountCreateRequest(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
+        key: _formKey,
         child: Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 500),
@@ -26,8 +51,9 @@ class CreateAccountScreen extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Почта',
                     hintText: 'example@example.com',
-                    border: OutlineInputBorder()
+                    border: OutlineInputBorder(),
                   ),
+                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите почту',
                 ),
                 const SizedBox(height: 12,),
                 TextFormField(
@@ -35,20 +61,23 @@ class CreateAccountScreen extends StatelessWidget {
                     labelText: 'Логин',
                     border: OutlineInputBorder()
                   ),
+                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите логин',
                 ),
                 const SizedBox(height: 12,),
-                const PasswordField(
+                PasswordFormField(
                   labelText: 'Пароль',
                   useShowButton: true, 
+                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите пароль',
                 ),
                 const SizedBox(height: 12,),
-                const PasswordField(
+                PasswordFormField(
                   labelText: 'Повторите пароль',
                   useShowButton: true, 
+                  validator: (value) => value != null && value.isNotEmpty ? null : 'Повторите пароль',
                 ),
                 const SizedBox(height: 16,),
                 TextButton(
-                  onPressed: () => print('login'), 
+                  onPressed: () => onSubmitForm(context), 
                   child: const Text('Зарегистрироваться'),
                   style: TextButton.styleFrom(
                     primary: Colors.white,

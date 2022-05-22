@@ -1,23 +1,32 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/widgets/password_field.dart';
+import 'package:frontend_flutter/widgets/password_form_field.dart';
 
 class LoginScreen extends StatelessWidget {
   final Function() onLogin;
   final Function() onCreateAccount;
   final Function() onForgot;
 
-  const LoginScreen({
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  LoginScreen({
     Key? key, 
     required this.onLogin,
     required this.onCreateAccount,
     required this.onForgot
   }): super(key: key);
 
+  onSubmitForm() {
+    if (_formKey.currentState!.validate()) {
+      onLogin();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
+        key: _formKey,
         child: Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 500),
@@ -37,11 +46,13 @@ class LoginScreen extends StatelessWidget {
                     labelText: 'Логин',
                     border: OutlineInputBorder()
                   ),
+                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите логин',
                 ),
                 const SizedBox(height: 12,),
-                const PasswordField(
+                PasswordFormField(
                   labelText: 'Пароль',
-                  useShowButton: true, 
+                  useShowButton: true,
+                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите пароль',
                 ),
                 Align(
                   alignment: Alignment.centerRight, 
@@ -49,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16,),
                 TextButton(
-                  onPressed: onLogin, 
+                  onPressed: onSubmitForm, 
                   child: const Text('Войти'),
                   style: TextButton.styleFrom(
                     primary: Colors.white,

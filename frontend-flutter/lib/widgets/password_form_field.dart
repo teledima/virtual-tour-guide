@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
-class PasswordField extends StatefulWidget {
+class PasswordFormField extends StatefulWidget {
   final String? labelText;
   final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
   final bool? useShowButton;
 
-  const PasswordField({
+  const PasswordFormField({
     Key? key, 
     this.labelText,
     this.controller,
+    this.validator,
     this.useShowButton
   }): super(key: key);
 
   @override
-  PasswordFieldState createState() => PasswordFieldState();
+  PasswordFormFieldState createState() => PasswordFormFieldState();
 }
 
-class PasswordFieldState extends State<PasswordField> {
+class PasswordFormFieldState extends State<PasswordFormField> {
   late bool _showPass;
 
   @override
@@ -27,7 +29,7 @@ class PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       obscureText: _showPass,
       decoration: InputDecoration(
         labelText: widget.labelText,
@@ -40,6 +42,7 @@ class PasswordFieldState extends State<PasswordField> {
           ) : null
       ),
       controller: widget.controller,
+      validator: widget.validator,
     );
   }
 }
