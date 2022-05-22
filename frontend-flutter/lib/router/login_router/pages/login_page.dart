@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:frontend_flutter/screens/login_screen.dart';
 
 class LoginPage extends Page {
+  final Function() onLogin;
   final Function() onCreateAccount;
   final Function() onForgot;
 
   const LoginPage({
+    required this.onLogin,
     required this.onCreateAccount,
     required this.onForgot
   }): super(key: const ValueKey('LoginPage'));
@@ -16,7 +18,7 @@ class LoginPage extends Page {
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
       settings: this,
-      builder: (_) => LoginScreen(onCreateAccount: onCreateAccount, onForgot: onForgot,)
+      builder: (_) => LoginScreen(onLogin: onLogin, onCreateAccount: onCreateAccount, onForgot: onForgot,)
     );
   }
 }

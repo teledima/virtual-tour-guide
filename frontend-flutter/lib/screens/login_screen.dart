@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:frontend_flutter/widgets/password_field.dart';
 
 class LoginScreen extends StatelessWidget {
+  final Function() onLogin;
   final Function() onCreateAccount;
   final Function() onForgot;
 
   const LoginScreen({
     Key? key, 
+    required this.onLogin,
     required this.onCreateAccount,
     required this.onForgot
   }): super(key: key);
@@ -47,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16,),
                 TextButton(
-                  onPressed: () => print('login'), 
+                  onPressed: onLogin, 
                   child: const Text('Войти'),
                   style: TextButton.styleFrom(
                     primary: Colors.white,

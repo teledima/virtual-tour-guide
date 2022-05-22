@@ -5,6 +5,7 @@ import 'package:frontend_flutter/router/login_router/login_configuration.dart';
 import 'package:frontend_flutter/router/login_router/pages/create_account_page.dart';
 import 'package:frontend_flutter/router/login_router/pages/forgot_page.dart';
 import 'package:frontend_flutter/router/login_router/pages/login_page.dart';
+import 'package:frontend_flutter/router/login_router/pages/tour_page.dart';
 
 class LoginRouterDelegate extends RouterDelegate<LoginConfiguration> with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   final GlobalKey<NavigatorState> _navigatorKey;
@@ -13,8 +14,8 @@ class LoginRouterDelegate extends RouterDelegate<LoginConfiguration> with Change
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
 
   bool? _isLogin;
-  bool get isLogin => _isLogin ?? false;
-  set isLogin(bool value) {
+  bool? get isLogin => _isLogin;
+  set isLogin(bool? value) {
     _isLogin = value;
     notifyListeners();
   }
@@ -40,7 +41,12 @@ class LoginRouterDelegate extends RouterDelegate<LoginConfiguration> with Change
     return Navigator(
       key: navigatorKey,
       pages: [
-        if (isLogin) LoginPage(
+        if (isLogin ?? false) LoginPage(
+          onLogin: () {
+            isLogin = null;
+            isCreateAccount = false;
+            isForgot = false;
+          },
           onCreateAccount: () {
             isLogin = false;
             isCreateAccount = true;
@@ -53,7 +59,8 @@ class LoginRouterDelegate extends RouterDelegate<LoginConfiguration> with Change
           }
         ),
         if (isCreateAccount) const CreateAccountPage(),
-        if (isForgot) const ForgotPage()
+        if (isForgot) const ForgotPage(),
+        if (isLogin == null) const TourPage()
       ],
       onPopPage: (route, result) {
         if (!route.didPop(result)) return false;
@@ -86,7 +93,7 @@ class LoginRouterDelegate extends RouterDelegate<LoginConfiguration> with Change
   
   @override
   LoginConfiguration? get currentConfiguration {
-    if (isLogin) {
+    if (isLogin ?? false) {
       return LoginConfiguration.login();
     } else if (isCreateAccount) {
       return LoginConfiguration.createAccount();
