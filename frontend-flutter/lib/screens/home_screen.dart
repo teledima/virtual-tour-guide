@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Виртуальный экскурсовод'),),
+      appBar: AppBar(title: const Text('Виртуальный экскурсовод'), automaticallyImplyLeading: false,),
       body: FutureBuilder(
         future: _listTours,
         builder: (context, AsyncSnapshot<List<TourDetail>> snapshot) {
