@@ -37,7 +37,7 @@ class CreateAccountScreen extends StatelessWidget {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 500),
             alignment: Alignment.center,
-            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 120),
+            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
