@@ -25,8 +25,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: 
-          Form(
+      body: Form(
         key: _formKey,
         child: Center(
           child: Container(
