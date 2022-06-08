@@ -46,15 +46,6 @@ class CreateAccountScreen extends StatelessWidget {
                   alignment: Alignment.center, 
                   child: Text('Регистрация', style: TextStyle(fontSize: 24),)
                 ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Почта',
-                    hintText: 'example@example.com',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите почту',
-                ),
                 const SizedBox(height: 12,),
                 TextFormField(
                   decoration: const InputDecoration(
