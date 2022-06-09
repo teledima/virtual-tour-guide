@@ -16,7 +16,7 @@ class SceneCard extends StatelessWidget {
     if (scene.thumbnail == null) {
       return Image.asset('assets/image_not_found.jpeg', fit: BoxFit.contain);
     } else {
-      return Image.network('http://192.168.1.44:8080/images/${scene.thumbnail}');
+      return Image.network('http://192.168.1.44:8080/images/${scene.thumbnail}', fit: BoxFit.contain,);
     }
   }
 
@@ -62,7 +62,7 @@ class SceneCard extends StatelessWidget {
                 ]
               ),
               const SizedBox(height: 8),
-              thumbnail,
+              Expanded(flex: 1, child: thumbnail),
             ]
           ),
         )

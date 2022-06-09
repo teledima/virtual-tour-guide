@@ -30,7 +30,7 @@ class TourCard extends StatelessWidget {
             children: [
               Center(child: Text(tour.title, style: const TextStyle(fontWeight: FontWeight.bold))),
               const SizedBox(height: 8),
-              thumbnail
+              Expanded(flex: 1, child: thumbnail)
             ]
           )
         ),
