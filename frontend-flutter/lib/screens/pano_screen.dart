@@ -60,10 +60,10 @@ class PanoScreenState extends State<PanoScreen> {
   }
 
   onAddHotspot() async {
-    showDialog(
-      context: context, 
-      builder: (_) => const AddHotspotDialog()
-    );
+    setState(() {
+      takePosition = true;
+      _updatedHotspot = null;
+    });
   }
 
   onTapHotspot(TourDetail tour, HotspotDetail hotspot) {
@@ -123,7 +123,7 @@ class PanoScreenState extends State<PanoScreen> {
                 Positioned(bottom: 0, child: Prompt(message: 'Выберите новое место'))
               ] : [],
               onTap: (longtitude, latitude, _) async{
-                if (takePosition) {
+                if (takePosition && _updatedHotspot != null) {
                   final result = await widget.hotspotRepository.moveHotspot(
                     snapshot.data!, 
                     _currentScene, 
@@ -144,6 +144,15 @@ class PanoScreenState extends State<PanoScreen> {
                       _updatedHotspot = null;
                     });                    
                   }
+                } else if (takePosition && _updatedHotspot == null) {
+                  setState(() {
+                    takePosition = false;
+                    _updatedHotspot = null;
+                  });
+                  showDialog(
+                    context: context, 
+                    builder: (_) => AddHotspotDialog(widget.currentTour.scenes!, longtitude, latitude)
+                  );
                 }
               },
             ),
