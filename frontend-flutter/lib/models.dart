@@ -1,3 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'models.g.dart';
+
 enum HotspotTypes {
   scene,
   info,
@@ -59,49 +63,67 @@ class SceneDetail {
       json.containsKey('title') ? json['title'] : null, 
       json['panorama'], 
       json.containsKey('thumbnail') ? json['thumbnail'] : null,
-      json['hotSpots'].map((hotspot) => HotspotDetail.fromJson(hotspot)).toList().cast<HotspotDetail>()
+      json['hotSpots'].map(
+        (hotspot) {
+          final String type = hotspot['type'].toString();
+          if (type == 'scene') {
+            return HotspotNavigationDetail.fromJson(hotspot);  
+          } else if (type == 'info') {
+
+          }
+        }
+      ).toList().cast<HotspotDetail>()
     );
   }
 
   deleteHotspot(HotspotDetail hotspotDetail) {
-    hotspots.removeWhere((hotspot) => hotspot.sceneId == hotspotDetail.sceneId);
+    hotspots.removeWhere((hotspot) => hotspot.latitude == hotspotDetail.latitude && hotspot.longtitude == hotspot.longtitude);
   }
 
   updateHotspotPosition(HotspotDetail hotspot, double newLatitude, double newLongtitude) {
-    final matchedHotspot = hotspots.firstWhere((hotspotItem) => hotspotItem.sceneId == hotspot.sceneId);
+    final matchedHotspot = hotspots.firstWhere((hotspotItem) => hotspotItem == hotspot);
     matchedHotspot.latitude = newLatitude;
     matchedHotspot.longtitude = newLongtitude;
   }
 }
 
-class HotspotDetail {
-  final HotspotTypes hotspotType;
+abstract class HotspotDetail {
   late double latitude;
   late double longtitude;
+
+  HotspotDetail(this.latitude, this.longtitude);
+
+  @override
+  bool operator ==(Object other) {
+    return other is HotspotDetail && latitude == other.latitude && longtitude == other.longtitude;
+  }
+
+  Map<String, dynamic> toJson();
+}
+
+
+@JsonSerializable()
+class HotspotNavigationDetail extends HotspotDetail {
   final String sceneId;
 
-  HotspotDetail(this.hotspotType, this.latitude, this.longtitude, this.sceneId);
+  HotspotNavigationDetail(double latitude, double longtitude, this.sceneId): super(latitude, longtitude);
 
-  static getHotspotType(String hotspotType) {
-    if (hotspotType == 'scene') {
-      return HotspotTypes.scene;
-    }
-    else if (hotspotType == 'info') {
-      return HotspotTypes.info;
-    }
-    else {
-      return HotspotTypes.unknown;
-    }
-  }
+  factory HotspotNavigationDetail.fromJson(Map<String, dynamic> json) => _$HotspotNavigationDetailFromJson(json);
+  
+  @override
+  Map<String, dynamic> toJson() => _$HotspotNavigationDetailToJson(this);
+}
 
-  factory HotspotDetail.fromJson(Map<String, dynamic> json) {
-    return HotspotDetail(
-      HotspotDetail.getHotspotType(json['type']), 
-      double.parse(json['latitude'].toString()), 
-      double.parse(json['longtitude'].toString()), 
-      json['sceneId']
-    );
-  }
+@JsonSerializable()
+class HotspotInfoDetail extends HotspotDetail {
+  final String description;
+
+  HotspotInfoDetail(double latitude, double longtitude, this.description): super(latitude, longtitude);
+
+  factory HotspotInfoDetail.fromJson(Map<String, dynamic> json) => _$HotspotInfoDetailFromJson(json);
+  
+  @override
+  Map<String, dynamic> toJson() => _$HotspotInfoDetailToJson(this);
 }
 
 class UpdateResult {

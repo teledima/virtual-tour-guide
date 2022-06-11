@@ -68,7 +68,7 @@ class PanoScreenState extends State<PanoScreen> {
 
   onTapHotspot(TourDetail tour, HotspotDetail hotspot) {
     setState(() {
-      _currentScene = tour.findSceneById(hotspot.sceneId)!;
+      _currentScene = tour.findSceneById((hotspot as HotspotNavigationDetail).sceneId)!;
     });
   }
 
@@ -80,7 +80,7 @@ class PanoScreenState extends State<PanoScreen> {
   }
 
   onDeleteHotspot(TourDetail tour, SceneDetail currentScene, HotspotDetail hotspot) async {
-    final result = await widget.hotspotRepository.deleteHotspot(tour, currentScene, hotspot);
+    final result = await widget.hotspotRepository.deleteHotspot(tour.tourId, currentScene.sceneId, hotspot);
     if (result.modifiedCount > 0) {
       setState(() {
         _currentScene.deleteHotspot(hotspot);
@@ -125,11 +125,8 @@ class PanoScreenState extends State<PanoScreen> {
               onTap: (longtitude, latitude, _) async{
                 if (takePosition && _updatedHotspot != null) {
                   final result = await widget.hotspotRepository.moveHotspot(
-                    snapshot.data!, 
-                    _currentScene, 
-                    _updatedHotspot!, 
-                    latitude, 
-                    longtitude
+                    snapshot.data!.tourId, _currentScene.sceneId, 
+                    _updatedHotspot!, latitude, longtitude
                   );
 
                   if (result.modifiedCount > 0) {
