@@ -10,9 +10,9 @@ router.delete('/', async(req, res) => {
     const result = await tourCollection.updateOne(
         { 
             _id: new ObjectId(body.tourId),
-            "scenes.sceneId": new ObjectId(body.sceneFrom)
+            "scenes.sceneId": new ObjectId(body.sceneId)
         },
-        { $pull: { "scenes.$.hotSpots": { sceneId: new ObjectId(body.sceneTo) } } }
+        { $pull: { "scenes.$.hotSpots": { latitude: body.latitude, longtitude: body.longtitude } } }
     );
     res.status(200).send(result);
 })
@@ -23,10 +23,10 @@ router.patch('/', async(req, res) => {
     const result = await tourCollection.updateOne(
         {
             _id: new ObjectId(body.tourId),
-            "scenes.sceneId": new ObjectId(body.sceneFrom),
+            "scenes.sceneId": new ObjectId(body.sceneId),
         },
         { $set: { "scenes.$.hotSpots.$[elem].latitude": body.latitude, "scenes.$.hotSpots.$[elem].longtitude": body.longtitude } },
-        { arrayFilters: [ {"elem.sceneId": new ObjectId(body.sceneTo)} ] }
+        { arrayFilters: [ {"elem.latitude": body.hotspot.latitude, "elem.longtitude": body.hotspot.longtitude } ] }
     )
     res.status(200).send(result);
 })
