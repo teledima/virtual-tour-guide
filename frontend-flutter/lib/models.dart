@@ -69,7 +69,7 @@ class SceneDetail {
           if (type == 'scene') {
             return HotspotNavigationDetail.fromJson(hotspot);  
           } else if (type == 'info') {
-
+            return HotspotNavigationDetail.fromJson(hotspot);
           }
         }
       ).toList().cast<HotspotDetail>()
@@ -88,10 +88,11 @@ class SceneDetail {
 }
 
 abstract class HotspotDetail {
-  late double latitude;
-  late double longtitude;
+  final String type;
+  double latitude;
+  double longtitude;
 
-  HotspotDetail(this.latitude, this.longtitude);
+  HotspotDetail(this.type, this.latitude, this.longtitude);
 
   @override
   bool operator ==(Object other) {
@@ -106,7 +107,7 @@ abstract class HotspotDetail {
 class HotspotNavigationDetail extends HotspotDetail {
   final String sceneId;
 
-  HotspotNavigationDetail(double latitude, double longtitude, this.sceneId): super(latitude, longtitude);
+  HotspotNavigationDetail(double latitude, double longtitude, this.sceneId, [String type = 'navigation']): super(type, latitude, longtitude);
 
   factory HotspotNavigationDetail.fromJson(Map<String, dynamic> json) => _$HotspotNavigationDetailFromJson(json);
   
@@ -118,7 +119,7 @@ class HotspotNavigationDetail extends HotspotDetail {
 class HotspotInfoDetail extends HotspotDetail {
   final String description;
 
-  HotspotInfoDetail(double latitude, double longtitude, this.description): super(latitude, longtitude);
+  HotspotInfoDetail(double latitude, double longtitude, this.description, [String type = 'info']): super(type, latitude, longtitude);
 
   factory HotspotInfoDetail.fromJson(Map<String, dynamic> json) => _$HotspotInfoDetailFromJson(json);
   

@@ -12,11 +12,13 @@ HotspotNavigationDetail _$HotspotNavigationDetailFromJson(
       (json['latitude'] as num).toDouble(),
       (json['longtitude'] as num).toDouble(),
       json['sceneId'] as String,
+      json['type'] as String? ?? 'navigation',
     );
 
 Map<String, dynamic> _$HotspotNavigationDetailToJson(
         HotspotNavigationDetail instance) =>
     <String, dynamic>{
+      'type': instance.type,
       'latitude': instance.latitude,
       'longtitude': instance.longtitude,
       'sceneId': instance.sceneId,
@@ -27,10 +29,12 @@ HotspotInfoDetail _$HotspotInfoDetailFromJson(Map<String, dynamic> json) =>
       (json['latitude'] as num).toDouble(),
       (json['longtitude'] as num).toDouble(),
       json['description'] as String,
+      json['type'] as String? ?? 'info',
     );
 
 Map<String, dynamic> _$HotspotInfoDetailToJson(HotspotInfoDetail instance) =>
     <String, dynamic>{
+      'type': instance.type,
       'latitude': instance.latitude,
       'longtitude': instance.longtitude,
       'description': instance.description,

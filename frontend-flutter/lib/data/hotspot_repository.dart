@@ -41,4 +41,18 @@ class HotspotRepository {
 
     return UpdateResult.fromJson(jsonDecode(response.body));
   } 
+
+  Future<UpdateResult> createHotspot(String tourId, String sceneId, HotspotDetail hotspot) async{
+    final response = await http.post(
+      Uri.parse(entrypoint), 
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        "tourId": tourId, 
+        "sceneId": sceneId,
+        "hotspot": hotspot.toJson()
+      })
+    );
+
+    return UpdateResult.fromJson(jsonDecode(response.body));
+  }
 }
