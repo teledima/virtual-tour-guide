@@ -146,10 +146,19 @@ class PanoScreenState extends State<PanoScreen> {
                     takePosition = false;
                     _updatedHotspot = null;
                   });
-                  showDialog(
+                  final HotspotDetail? hotspot = await showDialog<HotspotDetail>(
                     context: context, 
-                    builder: (_) => AddHotspotDialog(widget.currentTour.scenes!, longtitude, latitude)
+                    builder: (_) => AddHotspotDialog(
+                      widget.currentTour.tourId, 
+                      _currentScene.sceneId,
+                      widget.currentTour.scenes!, 
+                      longtitude, latitude
+                    )
                   );
+
+                  if (hotspot != null) {
+                    setState(() =>_currentScene.hotspots.add(hotspot));
+                  }
                 }
               },
             ),

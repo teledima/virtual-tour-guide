@@ -66,10 +66,10 @@ class SceneDetail {
       json['hotSpots'].map(
         (hotspot) {
           final String type = hotspot['type'].toString();
-          if (type == 'scene') {
+          if (type == 'navigation') {
             return HotspotNavigationDetail.fromJson(hotspot);  
           } else if (type == 'info') {
-            return HotspotNavigationDetail.fromJson(hotspot);
+            return HotspotInfoDetail.fromJson(hotspot);
           }
         }
       ).toList().cast<HotspotDetail>()
