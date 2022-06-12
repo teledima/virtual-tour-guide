@@ -113,7 +113,7 @@ class PanoScreenState extends State<PanoScreen> {
                     longitude: hotspot.longtitude,
                     widget: HotspotItem(
                       hotspotDetail: hotspot,
-                      onTap: () => onTapHotspot(snapshot.data!, hotspot),
+                      onTap: hotspot is HotspotNavigationDetail ? () => onTapHotspot(snapshot.data!, hotspot) : null,
                       onMove: () => onMoveHotspot(hotspot),
                       onDelete: () => onDeleteHotspot(snapshot.data!, _currentScene, hotspot),
                     )

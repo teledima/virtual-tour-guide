@@ -5,16 +5,16 @@ import 'package:frontend_flutter/models.dart';
 
 class HotspotItem extends StatefulWidget {
   final HotspotDetail hotspotDetail;
-  final Function() onTap;
+  final Function()? onTap;
   final Function() onMove;
   final Function() onDelete;
 
   const HotspotItem({
     Key? key, 
     required this.hotspotDetail,
-    required this.onTap,
+    this.onTap,
     required this.onMove,
-    required this.onDelete
+    required this.onDelete,
   }): super(key: key);
 
   @override
@@ -22,7 +22,40 @@ class HotspotItem extends StatefulWidget {
 }
 
 class HotspotItemState extends State<HotspotItem> {
+  bool _showDescription = false;
   Offset _tapPosition = Offset.zero;
+
+  Widget _buildHotspot() {
+    if (widget.hotspotDetail is HotspotInfoDetail) {
+      return Column(
+        children: [
+          if (_showDescription) Text((widget.hotspotDetail as HotspotInfoDetail).description),
+          IconButton(
+            onPressed: () => setState(() => _showDescription = !_showDescription),
+            icon: const Icon(Icons.info_outline)
+          )
+        ],
+      );
+    } else if (widget.hotspotDetail is HotspotNavigationDetail) {
+      return Column(
+        children: [
+          IconButton(
+            onPressed: widget.onTap,
+            icon: const Icon(Icons.arrow_circle_up_outlined)
+          )
+        ],
+      ); 
+    } else {
+      return Column(
+        children: const [
+          IconButton(
+            onPressed: null,
+            icon: Icon(Icons.circle_outlined)
+          )
+        ],
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +71,7 @@ class HotspotItemState extends State<HotspotItem> {
           PopupMenuItem(value: 2, child: const Text('Delete'), onTap: widget.onDelete)
         ]
       ),
-      child: Column(
-        children: [
-          const Text('test'),
-          IconButton(
-            onPressed: widget.onTap,
-            icon: const Icon(Icons.arrow_circle_up_sharp)
-          )
-        ],
-      )
+      child: _buildHotspot()
     );
   }
 }
