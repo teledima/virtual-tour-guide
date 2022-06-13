@@ -32,7 +32,7 @@ class HotspotItemState extends State<HotspotItem> {
           if (_showDescription) Text((widget.hotspotDetail as HotspotInfoDetail).description),
           IconButton(
             onPressed: () => setState(() => _showDescription = !_showDescription),
-            icon: const Icon(Icons.info_outline)
+            icon: Icon(Icons.info_outline, color: widget.hotspotDetail.color)
           )
         ],
       );
@@ -41,16 +41,16 @@ class HotspotItemState extends State<HotspotItem> {
         children: [
           IconButton(
             onPressed: widget.onTap,
-            icon: const Icon(Icons.arrow_circle_up_outlined)
+            icon: Icon(Icons.arrow_circle_up_outlined, color: widget.hotspotDetail.color,)
           )
         ],
       ); 
     } else {
       return Column(
-        children: const [
+        children: [
           IconButton(
             onPressed: null,
-            icon: Icon(Icons.circle_outlined)
+            icon: Icon(Icons.circle_outlined, color: widget.hotspotDetail.color,)
           )
         ],
       );

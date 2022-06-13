@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter/material.dart';
 
 part 'models.g.dart';
 
@@ -92,7 +93,23 @@ abstract class HotspotDetail {
   double latitude;
   double longtitude;
 
-  HotspotDetail(this.type, this.latitude, this.longtitude);
+  @JsonKey(name: 'color')
+  int? colorCode;
+
+  Color get color {
+    if (colorCode != null) {
+      return Color(colorCode!);
+    } else {
+      return Colors.black;
+    }
+  }
+
+  HotspotDetail({
+    required this.type, 
+    required this.latitude, 
+    required this.longtitude, 
+    this.colorCode
+  });
 
   @override
   bool operator ==(Object other) {
@@ -107,7 +124,18 @@ abstract class HotspotDetail {
 class HotspotNavigationDetail extends HotspotDetail {
   final String sceneId;
 
-  HotspotNavigationDetail(double latitude, double longtitude, this.sceneId, [String type = 'navigation']): super(type, latitude, longtitude);
+  HotspotNavigationDetail({
+    required double latitude, 
+    required double longtitude, 
+    required this.sceneId, 
+    int? colorCode, 
+    String type = 'navigation'
+  }): super(
+        type: type, 
+        latitude: latitude, 
+        longtitude: longtitude, 
+        colorCode: colorCode
+      );
 
   factory HotspotNavigationDetail.fromJson(Map<String, dynamic> json) => _$HotspotNavigationDetailFromJson(json);
   
@@ -119,7 +147,18 @@ class HotspotNavigationDetail extends HotspotDetail {
 class HotspotInfoDetail extends HotspotDetail {
   final String description;
 
-  HotspotInfoDetail(double latitude, double longtitude, this.description, [String type = 'info']): super(type, latitude, longtitude);
+  HotspotInfoDetail({
+    required double latitude, 
+    required double longtitude, 
+    required this.description, 
+    int? colorCode,
+    String type = 'info'
+  }): super(
+        type: type, 
+        latitude: latitude, 
+        longtitude: longtitude, 
+        colorCode: colorCode
+      );
 
   factory HotspotInfoDetail.fromJson(Map<String, dynamic> json) => _$HotspotInfoDetailFromJson(json);
   

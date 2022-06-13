@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_flutter/data/hotspot_repository.dart';
 import 'package:frontend_flutter/models.dart';
+import 'package:frontend_flutter/widgets/color_form_field.dart';
 import 'package:frontend_flutter/widgets/scene_form_field.dart';
 
 class AddHotspotDialog extends StatefulWidget {
@@ -31,6 +32,7 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
   String? _selectedType;
   String? _description;
   int? _selectedScene;
+  Color _selectedColor = Colors.blue;
 
   List<DropdownMenuItem<String>> _getItems() {
     return items.keys.map<DropdownMenuItem<String>>(
@@ -40,21 +42,20 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
 
   Widget _buildHotspot() {
     if (_selectedType == 'navigation') {
-      return 
-        Flexible(
-          flex: 1,
-          child:  SceneFormField(
-            scenes: widget.scenes,
-            validator: (item) {
-              if (item == null) {
-                return 'Выберите сцену';
-              } else {
-                return null;
-              }
-            },
-            onSaved: (value) => setState(() => _selectedScene = value),
-          )
-        );
+      return Flexible(
+        flex: 1,
+        child:  SceneFormField(
+          scenes: widget.scenes,
+          validator: (item) {
+            if (item == null) {
+              return 'Выберите сцену';
+            } else {
+              return null;
+            }
+          },
+          onSaved: (value) => setState(() => _selectedScene = value),
+        )
+      );
     } else if (_selectedType == 'info') {
       return Flexible(
         flex: 1,
@@ -65,6 +66,13 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
             isDense: true,
             border: OutlineInputBorder()
           ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Введите опписание';
+            } else {
+              return null;
+            }
+          },
         )
       );
     } else {
@@ -77,12 +85,21 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
       _formKey.currentState!.save();
       late final HotspotDetail hotspot;
       if (_selectedType == 'info') {
-        hotspot = HotspotInfoDetail(widget.latitude, widget.longtitude, _description!);
+        hotspot = HotspotInfoDetail(
+          latitude: widget.latitude,
+          longtitude: widget.longtitude,
+          description: _description!,
+          colorCode: _selectedColor.value
+        );
       } else if (_selectedType == 'navigation') {
-        hotspot = HotspotNavigationDetail(widget.latitude, widget.longtitude, widget.scenes[_selectedScene!].sceneId);
+        hotspot = HotspotNavigationDetail(
+          latitude: widget.latitude, 
+          longtitude: widget.longtitude, 
+          sceneId: widget.scenes[_selectedScene!].sceneId,
+          colorCode: _selectedColor.value
+        );
       }
       final result = await hotspotRepository.createHotspot(widget.tourId, widget.sceneId, hotspot);
-      print(result);
       if (result.modifiedCount == 1) {
         Navigator.of(context).pop(hotspot);
       }
@@ -112,12 +129,24 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
                   isDense: true,
                   border: OutlineInputBorder()
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Выберите тип указателя';
+                  } else {
+                    return null;
+                  }
+                },
               )
             ),
             if (_selectedType != null && items.keys.contains(_selectedType))
               ...[
                 const SizedBox(height: 8,),
-                _buildHotspot()
+                _buildHotspot(),
+                ColorFormField(
+                  type: _selectedType!, 
+                  onSaved: (color) => setState(() => _selectedColor = color!),
+                  initialColor: _selectedColor,
+                )
               ],
             const SizedBox(height: 12),
             Flexible(
@@ -127,7 +156,6 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
                 children: [
                   Text('Широта: ${widget.longtitude.toInt()}'), 
                   Text('Долгота: ${widget.latitude.toInt()}'),
-                  Text('Id: $_selectedScene')
                 ]
               )
             )

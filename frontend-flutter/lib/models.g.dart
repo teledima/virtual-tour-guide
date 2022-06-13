@@ -9,10 +9,11 @@ part of 'models.dart';
 HotspotNavigationDetail _$HotspotNavigationDetailFromJson(
         Map<String, dynamic> json) =>
     HotspotNavigationDetail(
-      (json['latitude'] as num).toDouble(),
-      (json['longtitude'] as num).toDouble(),
-      json['sceneId'] as String,
-      json['type'] as String? ?? 'navigation',
+      latitude: (json['latitude'] as num).toDouble(),
+      longtitude: (json['longtitude'] as num).toDouble(),
+      sceneId: json['sceneId'] as String,
+      colorCode: json['color'] as int?,
+      type: json['type'] as String? ?? 'navigation',
     );
 
 Map<String, dynamic> _$HotspotNavigationDetailToJson(
@@ -21,15 +22,17 @@ Map<String, dynamic> _$HotspotNavigationDetailToJson(
       'type': instance.type,
       'latitude': instance.latitude,
       'longtitude': instance.longtitude,
+      'color': instance.colorCode,
       'sceneId': instance.sceneId,
     };
 
 HotspotInfoDetail _$HotspotInfoDetailFromJson(Map<String, dynamic> json) =>
     HotspotInfoDetail(
-      (json['latitude'] as num).toDouble(),
-      (json['longtitude'] as num).toDouble(),
-      json['description'] as String,
-      json['type'] as String? ?? 'info',
+      latitude: (json['latitude'] as num).toDouble(),
+      longtitude: (json['longtitude'] as num).toDouble(),
+      description: json['description'] as String,
+      colorCode: json['color'] as int?,
+      type: json['type'] as String? ?? 'info',
     );
 
 Map<String, dynamic> _$HotspotInfoDetailToJson(HotspotInfoDetail instance) =>
@@ -37,5 +40,6 @@ Map<String, dynamic> _$HotspotInfoDetailToJson(HotspotInfoDetail instance) =>
       'type': instance.type,
       'latitude': instance.latitude,
       'longtitude': instance.longtitude,
+      'color': instance.colorCode,
       'description': instance.description,
     };
