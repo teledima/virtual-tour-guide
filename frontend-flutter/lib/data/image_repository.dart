@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ImageRepository {
-  static String entrypoint = 'http://192.168.1.44:8080/images';
+  static String entrypoint = '${dotenv.env["SERVER_ENTRYPOINT"]}/images';
 }

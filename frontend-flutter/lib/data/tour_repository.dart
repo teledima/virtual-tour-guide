@@ -1,12 +1,13 @@
 // Dart
 import 'dart:convert';
-// Flutter
 import 'package:http/http.dart' as http;
+// Flutter
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 // Application
 import 'package:frontend_flutter/models.dart';
 
 class TourRepository {
-  static String entrypoint = 'http://192.168.1.44:8080/tours';
+  static String entrypoint = '${dotenv.env["SERVER_ENTRYPOINT"]}/tours';
 
   Future<List<TourDetail>> fetchTours() async {
     final response = await http.get(Uri.parse('$entrypoint/all'));

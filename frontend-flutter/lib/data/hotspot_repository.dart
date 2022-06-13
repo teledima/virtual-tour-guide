@@ -2,11 +2,12 @@
 import 'dart:convert';
 // Flutter
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 // Application
 import 'package:frontend_flutter/models.dart';
 
 class HotspotRepository {
-  static String entrypoint = 'http://192.168.1.44:8080/hotspots';
+  static String entrypoint = '${dotenv.env["SERVER_ENTRPOINT"]}/hotspots';
 
   Future<UpdateResult> deleteHotspot(String tourId, String sceneId, HotspotDetail hotspot) async{
     final response = await http.delete(
