@@ -1,7 +1,7 @@
 // Flutter
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/data/tour_repository.dart';
 // Application
+import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/router/app_router/app_configuration.dart';
 
 class AppRouteInformationParser extends RouteInformationParser<AppConfiguration> {

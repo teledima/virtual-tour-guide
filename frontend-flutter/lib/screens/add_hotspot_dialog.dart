@@ -1,4 +1,6 @@
+// Flutter
 import 'package:flutter/material.dart';
+// Application
 import 'package:frontend_flutter/data/hotspot_repository.dart';
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/widgets/color_form_field.dart';

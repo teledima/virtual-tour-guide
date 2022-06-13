@@ -6,8 +6,8 @@ import 'package:frontend_flutter/data/hotspot_repository.dart';
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/widgets/hotspot_item.dart';
 import 'package:frontend_flutter/widgets/prompt.dart';
-import 'package:panorama/panorama.dart';
 import 'package:frontend_flutter/screens/add_hotspot_dialog.dart';
+import 'package:panorama/panorama.dart';
 
 class PanoScreen extends StatefulWidget {
   final TourRepository tourRepository = TourRepository();

@@ -9,16 +9,16 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final _delegator_login = LoginRouterDelegate();
-  final _parser_login = LoginRouteInformationParser();
+  final _delegatorLogin = LoginRouterDelegate();
+  final _parserLogin = LoginRouteInformationParser();
 
   App({Key? key}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routeInformationParser: _parser_login, 
-      routerDelegate: _delegator_login
+      routeInformationParser: _parserLogin, 
+      routerDelegate: _delegatorLogin
     );
   }
 }

@@ -1,4 +1,6 @@
+// Flutter
 import 'package:flutter/material.dart';
+// Application
 import 'package:frontend_flutter/widgets/color_select_dialog.dart';
 
 class ColorFormField extends StatelessWidget {

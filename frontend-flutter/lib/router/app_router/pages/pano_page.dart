@@ -1,6 +1,5 @@
 // Flutter
 import 'package:flutter/material.dart';
-
 // Application
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/screens/pano_screen.dart';

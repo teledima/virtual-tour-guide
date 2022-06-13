@@ -1,5 +1,8 @@
+// Dart
 import 'dart:async';
+// Flutter
 import 'package:flutter/material.dart';
+// Application
 import 'package:frontend_flutter/widgets/password_form_field.dart';
 
 class CreateAccountScreen extends StatelessWidget {

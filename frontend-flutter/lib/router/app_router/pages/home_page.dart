@@ -1,7 +1,7 @@
 // Flutter
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/models.dart';
 // Application
+import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/screens/home_screen.dart';
 
 class HomePage extends Page {

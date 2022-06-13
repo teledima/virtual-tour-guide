@@ -1,7 +1,7 @@
 // Flutter
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/models.dart';
 // Application
+import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/screens/show_scenes_screen.dart';
 
 class ShowScenesPage extends Page {

@@ -111,5 +111,4 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
       return null;
     }
   }
-
 }

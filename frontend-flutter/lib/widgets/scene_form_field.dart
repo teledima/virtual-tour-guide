@@ -1,5 +1,7 @@
-import 'package:awesome_select/awesome_select.dart';
+// Flutter
 import 'package:flutter/material.dart';
+import 'package:awesome_select/awesome_select.dart';
+// Application
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/data/image_repository.dart';
 
@@ -100,4 +102,3 @@ class SceneFormField extends StatelessWidget {
     );
   }
 }
-
