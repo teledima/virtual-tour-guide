@@ -112,6 +112,7 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add hotspot'),
+      scrollable: true,
       content: Form(
         key: _formKey,
         child: Column(
@@ -124,13 +125,14 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
                 onChanged: (item) => setState(() {
                   _selectedType = item ?? items.keys.first;
                 }),
-                hint: const Text('Выберите тип указателя'),
+                hint: const Text('Тип указателя'),
                 value: _selectedType,
                 focusColor: Colors.white,
                 decoration: const InputDecoration(
                   isDense: true,
                   border: OutlineInputBorder()
                 ),
+                isExpanded: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Выберите тип указателя';
