@@ -40,6 +40,7 @@ dependencies:
   json_serializable: ^6.2.0
   json_annotation: ^4.5.0
   flutter_colorpicker: ^1.0.3
+  quiver: ^3.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

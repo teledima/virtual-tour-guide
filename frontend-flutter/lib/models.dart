@@ -1,18 +1,18 @@
+// Dart
 import 'package:json_annotation/json_annotation.dart';
+import 'package:quiver/core.dart';
+// Flutter
 import 'package:flutter/material.dart';
 
 part 'models.g.dart';
 
-enum HotspotTypes {
-  scene,
-  info,
-  unknown
-}
-
+@JsonSerializable(createToJson: false)
 class TourDetail {
+  @JsonKey(name: "_id")
   final String tourId;
   final String title;
   final List<SceneDetail>? scenes;
+  @JsonKey(name: "default")
   DefaultDetail? defaultDetail;
 
   TourDetail(this.tourId, this.title, this.scenes, this.defaultDetail);
@@ -21,14 +21,7 @@ class TourDetail {
     return findSceneById(defaultDetail!.firstScene)!;
   }
 
-  factory TourDetail.fromJson(Map<String, dynamic> json) {
-    return TourDetail(
-      json['_id'],
-      json['title'],
-      json['scenes']?.map((scene) => SceneDetail.fromJson(scene)).toList().cast<SceneDetail>(), 
-      json.containsKey('default') ? DefaultDetail.fromJson(json['default']) : null
-    );
-  }
+  factory TourDetail.fromJson(Map<String, dynamic> json) => _$TourDetailFromJson(json);
 
   SceneDetail? findSceneById(String sceneId) {
     if (scenes!.any((scene) => scene.sceneId == sceneId)) {
@@ -39,14 +32,13 @@ class TourDetail {
   }
 }
 
+@JsonSerializable(createToJson: false)
 class DefaultDetail {
   final String firstScene;
 
   DefaultDetail(this.firstScene);
 
-  factory DefaultDetail.fromJson(Map<String, dynamic> json) {
-    return DefaultDetail(json['firstScene']);
-  }
+  factory DefaultDetail.fromJson(Map<String, dynamic> json) => _$DefaultDetailFromJson(json);
 }
 
 class SceneDetail {
@@ -117,8 +109,13 @@ abstract class HotspotDetail {
   }
 
   Map<String, dynamic> toJson();
+  
+  @override
+  int get hashCode { 
+    return hash2(latitude.hashCode, longtitude.hashCode);
+  }
+  
 }
-
 
 @JsonSerializable()
 class HotspotNavigationDetail extends HotspotDetail {
@@ -166,6 +163,7 @@ class HotspotInfoDetail extends HotspotDetail {
   Map<String, dynamic> toJson() => _$HotspotInfoDetailToJson(this);
 }
 
+@JsonSerializable(createToJson: false)
 class UpdateResult {
   final bool acknowledged;
   final int matchedCount;
@@ -175,13 +173,5 @@ class UpdateResult {
 
   UpdateResult(this.acknowledged, this.matchedCount, this.modifiedCount, this.upsertedCount, this.upsertedId);
 
-  factory UpdateResult.fromJson(Map<String, dynamic> json) {
-    return UpdateResult(
-      json['acknowledged'], 
-      json['matchedCount'], 
-      json['modifiedCount'], 
-      json['upsertedCount'], 
-      json.containsKey('upsertedId') ? json['upsertedId'] : null
-    );
-  }
+  factory UpdateResult.fromJson(Map<String, dynamic> json) => _$UpdateResultFromJson(json);
 }
