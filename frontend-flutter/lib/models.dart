@@ -6,22 +6,29 @@ import 'package:flutter/material.dart';
 
 part 'models.g.dart';
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class TourDetail {
   @JsonKey(name: "_id")
   final String tourId;
   final String title;
+  @JsonKey(includeIfNull: false)
   final List<SceneDetail>? scenes;
-  @JsonKey(name: "default")
+  @JsonKey(name: "default", includeIfNull: false)
   DefaultDetail? defaultDetail;
 
   TourDetail(this.tourId, this.title, this.scenes, this.defaultDetail);
 
-  SceneDetail get defaultScene {
-    return findSceneById(defaultDetail!.firstScene)!;
+  SceneDetail? get defaultScene {
+    if (defaultDetail != null) {
+      return findSceneById(defaultDetail!.firstScene);
+    } else {
+      return null;
+    }
   }
 
   factory TourDetail.fromJson(Map<String, dynamic> json) => _$TourDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TourDetailToJson(this);
 
   SceneDetail? findSceneById(String sceneId) {
     if (scenes!.any((scene) => scene.sceneId == sceneId)) {
@@ -32,15 +39,18 @@ class TourDetail {
   }
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class DefaultDetail {
   final String firstScene;
 
   DefaultDetail(this.firstScene);
 
   factory DefaultDetail.fromJson(Map<String, dynamic> json) => _$DefaultDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DefaultDetailToJson(this);
 }
 
+@JsonSerializable(createFactory: false)
 class SceneDetail {
   final String sceneId;
   final String? title;
@@ -68,6 +78,8 @@ class SceneDetail {
       ).toList().cast<HotspotDetail>()
     );
   }
+
+  Map<String, dynamic> toJson() => _$SceneDetailToJson(this);
 
   deleteHotspot(HotspotDetail hotspotDetail) {
     hotspots.removeWhere((hotspot) => hotspot.latitude == hotspotDetail.latitude && hotspot.longtitude == hotspot.longtitude);
@@ -174,4 +186,14 @@ class UpdateResult {
   UpdateResult(this.acknowledged, this.matchedCount, this.modifiedCount, this.upsertedCount, this.upsertedId);
 
   factory UpdateResult.fromJson(Map<String, dynamic> json) => _$UpdateResultFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class InsertOneResult {
+  final bool acknowledged;
+  final String insertedId;
+
+  InsertOneResult(this.acknowledged, this.insertedId);
+
+  factory InsertOneResult.fromJson(Map<String, dynamic> json) => _$InsertOneResultFromJson(json);
 }

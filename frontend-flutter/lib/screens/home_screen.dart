@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Application
 import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/models.dart';
+import 'package:frontend_flutter/screens/add_tour_dialog.dart';
 import 'package:frontend_flutter/widgets/tour_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,6 +18,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<TourDetail>> _listTours;
+
+  void onAddTour() async {
+    final newTour = await showDialog<TourDetail>(
+      context: context, 
+      builder: (_) => AddTourDialog()
+    );
+    if (newTour != null) { 
+      final result = await widget.tourRepository.addTour(newTour);
+      if (result.acknowledged) {
+        setState(() => _listTours = widget.tourRepository.fetchTours());
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -41,7 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
             return const Center(child: Text('Loading...'));
           }
         },
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onAddTour,
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
+        mini: false,
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 // Dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 // Flutter
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 // Application
@@ -8,6 +9,12 @@ import 'package:frontend_flutter/models.dart';
 
 class TourRepository {
   static String entrypoint = '${dotenv.env["SERVER_ENTRYPOINT"]}/tours';
+
+  Future<InsertOneResult> addTour(TourDetail newTour) async {
+    final dio = Dio();
+    final response = await dio.post(entrypoint, data: newTour.toJson());
+    return InsertOneResult.fromJson(response.data);
+  }
 
   Future<List<TourDetail>> fetchTours() async {
     final response = await http.get(Uri.parse('$entrypoint/all'));

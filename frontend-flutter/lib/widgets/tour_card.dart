@@ -8,10 +8,10 @@ class TourCard extends StatelessWidget {
   final ValueChanged<TourDetail> onTourSelected;
 
   Image get thumbnail {
-    if (tour.defaultScene.thumbnail == null) {
+    if (tour.defaultScene?.thumbnail == null) {
       return Image.asset('assets/image_not_found.jpeg', fit: BoxFit.contain);
     } else {
-      return Image.network('http://192.168.1.44:8080/images/${tour.defaultScene.thumbnail}');
+      return Image.network('http://192.168.1.44:8080/images/${tour.defaultScene!.thumbnail}');
     }
   }
 

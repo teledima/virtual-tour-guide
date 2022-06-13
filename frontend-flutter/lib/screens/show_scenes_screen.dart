@@ -51,7 +51,6 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
         onPressed: onAddScene,
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
-        mini: true,
       ),
     );
   }

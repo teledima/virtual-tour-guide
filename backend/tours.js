@@ -4,6 +4,13 @@ const router = express.Router()
 const { ObjectId } = require('mongodb')
 let { mongoClient, tourCollection} = require('./utils/mongo')
 
+router.post('/', async(req, res) => {
+    mongoClient = await mongoClient.connect();
+
+    const result = await tourCollection.insertOne({...req.body, "_id": new ObjectId()});
+    res.status(200).send(result);
+});
+
 router.get('/all', async(req, res) => {
     mongoClient = await mongoClient.connect();
     

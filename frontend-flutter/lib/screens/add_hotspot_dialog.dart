@@ -70,7 +70,7 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Введите опписание';
+              return 'Введите описание';
             } else {
               return null;
             }

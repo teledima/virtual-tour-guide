@@ -54,7 +54,8 @@ class PanoScreenState extends State<PanoScreen> {
       _currentScene = widget.currentScene!;
     } else {
       _currentTour.then((tour) {
-        _currentScene = tour.defaultScene;
+        // TODO: check for vulnerability
+        _currentScene = tour.defaultScene!;
       });
     }
   }
@@ -166,7 +167,6 @@ class PanoScreenState extends State<PanoScreen> {
               onPressed: onAddHotspot,
               backgroundColor: Colors.green,
               child: const Icon(Icons.add),
-              mini: true,
             ),
           );
         } else {

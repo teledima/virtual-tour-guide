@@ -17,10 +17,41 @@ TourDetail _$TourDetailFromJson(Map<String, dynamic> json) => TourDetail(
           : DefaultDetail.fromJson(json['default'] as Map<String, dynamic>),
     );
 
+Map<String, dynamic> _$TourDetailToJson(TourDetail instance) {
+  final val = <String, dynamic>{
+    '_id': instance.tourId,
+    'title': instance.title,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('scenes', instance.scenes);
+  writeNotNull('default', instance.defaultDetail);
+  return val;
+}
+
 DefaultDetail _$DefaultDetailFromJson(Map<String, dynamic> json) =>
     DefaultDetail(
       json['firstScene'] as String,
     );
+
+Map<String, dynamic> _$DefaultDetailToJson(DefaultDetail instance) =>
+    <String, dynamic>{
+      'firstScene': instance.firstScene,
+    };
+
+Map<String, dynamic> _$SceneDetailToJson(SceneDetail instance) =>
+    <String, dynamic>{
+      'sceneId': instance.sceneId,
+      'title': instance.title,
+      'panorama': instance.panorama,
+      'thumbnail': instance.thumbnail,
+      'hotspots': instance.hotspots,
+    };
 
 HotspotNavigationDetail _$HotspotNavigationDetailFromJson(
         Map<String, dynamic> json) =>
@@ -66,4 +97,10 @@ UpdateResult _$UpdateResultFromJson(Map<String, dynamic> json) => UpdateResult(
       json['modifiedCount'] as int,
       json['upsertedCount'] as int,
       json['upsertedId'] as String?,
+    );
+
+InsertOneResult _$InsertOneResultFromJson(Map<String, dynamic> json) =>
+    InsertOneResult(
+      json['acknowledged'] as bool,
+      json['insertedId'] as String,
     );
