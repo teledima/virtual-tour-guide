@@ -28,7 +28,27 @@ class TourCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(child: Text(tour.title, style: const TextStyle(fontWeight: FontWeight.bold))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 1, 
+                    child: Text(tour.title, style: const TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center,)
+                  ),
+                  PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
+                    PopupMenuItem(
+                      child: const Text('Изменить название'),
+                      // TODO
+                      onTap: () => print('Change title'),
+                    ),
+                    PopupMenuItem(
+                      child: const Text('Удалить'),
+                      // TODO
+                      onTap: () => print('Change title'),
+                    ),
+                  ])
+                ]
+              ),
               const SizedBox(height: 8),
               Expanded(flex: 1, child: thumbnail)
             ]

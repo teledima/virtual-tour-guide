@@ -55,10 +55,21 @@ class SceneCard extends StatelessWidget {
                     )
                   ),
                   PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
+                    // TODO
+                    PopupMenuItem(
+                      child: const Text('Изменить название'),
+                      onTap: () => print('Change title'),
+                    ),
                     PopupMenuItem(
                       child: const Text('Начальная сцена'),
                       onTap: onSetDefaultSceneTap,
-                    )
+                    ),
+                    // TODO
+                    PopupMenuItem(
+                      child: const Text('Удалить'),
+                      onTap: () => print('Remove'),
+                    ),
+
                   ])
                 ]
               ),

@@ -40,8 +40,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
     return Scaffold(
-      appBar: AppBar(title: const Text('Виртуальный экскурсовод'), automaticallyImplyLeading: false,),
+      appBar: AppBar(
+        title: const Text('Виртуальный экскурсовод'), 
+        actions: [
+          // TODO
+          TextButton(style: style, onPressed: () => print('Exit'), child: const Text('Выход'))
+        ],
+        automaticallyImplyLeading: false,
+      ),
       body: FutureBuilder(
         future: _listTours,
         builder: (context, AsyncSnapshot<List<TourDetail>> snapshot) {
@@ -58,9 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: onAddTour,
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
-        mini: false,
+        child: const Icon(Icons.add, size: 32,),
       ),
     );
   }

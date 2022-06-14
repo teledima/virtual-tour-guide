@@ -100,7 +100,9 @@ class PanoScreenState extends State<PanoScreen> {
             appBar: AppBar(
               title: Text(snapshot.data!.title),
               actions: [
-                TextButton(style: style, onPressed: widget.onShowScenes, child: const Text('Сцены'))
+                TextButton(style: style, onPressed: widget.onShowScenes, child: const Text('Сцены')),
+                // TODO
+                TextButton(style: style, onPressed: () => print('exit'), child: const Text('Выход')),
               ],
             ),
             body: Panorama(
@@ -165,8 +167,7 @@ class PanoScreenState extends State<PanoScreen> {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: onAddHotspot,
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.add),
+              child: const Icon(Icons.add, size: 32,),
             ),
           );
         } else {
