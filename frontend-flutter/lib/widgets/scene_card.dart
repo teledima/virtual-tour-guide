@@ -45,25 +45,22 @@ class SceneCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Flexible(
-                flex: 1, 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        scene.title ?? 'No title', 
-                        style: const TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center,
-                      )
-                    ),
-                    PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
-                      PopupMenuItem(
-                        child: const Text('Начальная сцена'),
-                        onTap: onSetDefaultSceneTap,
-                      )
-                    ])
-                  ]
-                )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      scene.title ?? 'No title', 
+                      style: const TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center,
+                    )
+                  ),
+                  PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry>[
+                    PopupMenuItem(
+                      child: const Text('Начальная сцена'),
+                      onTap: onSetDefaultSceneTap,
+                    )
+                  ])
+                ]
               ),
               Expanded(flex: 1, child: thumbnail),
             ]

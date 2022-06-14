@@ -100,7 +100,7 @@ class PanoScreenState extends State<PanoScreen> {
             appBar: AppBar(
               title: Text(snapshot.data!.title),
               actions: [
-                TextButton(style: style, onPressed: widget.onShowScenes, child: const Text('Scenes'))
+                TextButton(style: style, onPressed: widget.onShowScenes, child: const Text('Сцены'))
               ],
             ),
             body: Panorama(

@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend_flutter/models.dart';
 
 class HotspotRepository {
-  static String entrypoint = '${dotenv.env["SERVER_ENTRPOINT"]}/hotspots';
+  static String entrypoint = '${dotenv.env["SERVER_ENTRYPOINT"]}/hotspots';
 
   Future<UpdateResult> deleteHotspot(String tourId, String sceneId, HotspotDetail hotspot) async{
     final response = await http.delete(

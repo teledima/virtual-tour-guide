@@ -67,8 +67,8 @@ class HotspotItemState extends State<HotspotItem> {
         context: context, 
         position: RelativeRect.fromRect(_tapPosition & const Size(4, 4), Offset.zero & screenSize ), 
         items: <PopupMenuEntry>[
-          PopupMenuItem(value: 1, child: const Text('Move'), onTap: widget.onMove),
-          PopupMenuItem(value: 2, child: const Text('Delete'), onTap: widget.onDelete)
+          PopupMenuItem(value: 1, child: const Text('Переместить'), onTap: widget.onMove),
+          PopupMenuItem(value: 2, child: const Text('Удалить'), onTap: widget.onDelete)
         ]
       ),
       child: _buildHotspot()

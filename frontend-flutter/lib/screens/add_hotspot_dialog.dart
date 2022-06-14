@@ -111,7 +111,7 @@ class AddHotspotDialogState extends State<AddHotspotDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add hotspot'),
+      title: const Text('Добавить указатель'),
       scrollable: true,
       content: Form(
         key: _formKey,

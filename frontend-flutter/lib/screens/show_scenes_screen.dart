@@ -45,7 +45,7 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
         )
     ];
     return Scaffold(
-      appBar: AppBar(title: const Text('Scenes')),
+      appBar: AppBar(title: const Text('Сцены')),
       body: GridView.extent(maxCrossAxisExtent: 360, children: children,),
       floatingActionButton: FloatingActionButton(
         onPressed: onAddScene,
