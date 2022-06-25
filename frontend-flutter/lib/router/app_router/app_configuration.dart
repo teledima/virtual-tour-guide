@@ -19,7 +19,13 @@ class AppConfiguration {
     : currentTour = value,
       showScenes = true;
 
+  AppConfiguration.newScene(TourDetail value)
+    : currentTour = value,
+      currentScene = SceneDetail.empty(),
+      showScenes = false;
+
   bool get isHomePage => currentTour == null;
-  bool get isPanoPage => currentTour != null && showScenes == false;
+  bool get isPanoPage => currentTour != null && currentScene != SceneDetail.empty() && showScenes == false;
+  bool get isNewScene => currentTour != null && currentScene == SceneDetail.empty() && showScenes == false;
   bool get isShowScenes => currentTour != null && showScenes == true;
 }

@@ -42,6 +42,8 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   quiver: ^3.1.0
   flutter_dotenv: ^5.0.2
+  camera: ^0.9.8+1
+  get_it: ^7.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

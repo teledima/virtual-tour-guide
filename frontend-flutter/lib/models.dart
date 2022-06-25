@@ -54,11 +54,15 @@ class DefaultDetail {
 class SceneDetail {
   final String sceneId;
   final String? title;
-  final String panorama;
+  final String? panorama;
   final String? thumbnail;
   final List<HotspotDetail> hotspots;
 
   SceneDetail(this.sceneId, this.title, this.panorama, this.thumbnail, this.hotspots);
+
+  factory SceneDetail.empty() {
+    return SceneDetail('new', null, null, null, []);
+  }
 
   factory SceneDetail.fromJson(Map<String, dynamic> json) {
     return SceneDetail(
@@ -89,6 +93,16 @@ class SceneDetail {
     final matchedHotspot = hotspots.firstWhere((hotspotItem) => hotspotItem == hotspot);
     matchedHotspot.latitude = newLatitude;
     matchedHotspot.longtitude = newLongtitude;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SceneDetail && sceneId == other.sceneId;
+  }
+  
+  @override
+  int get hashCode {
+    return hash2(sceneId, hotspots);
   }
 }
 

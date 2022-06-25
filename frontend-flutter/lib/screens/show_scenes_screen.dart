@@ -10,6 +10,7 @@ class ShowScenesScreen extends StatefulWidget {
   final TourDetail tour;
   final Function() onReloadScenes;
   final Function(SceneDetail) onOpenScene;
+  final Function() onOpenNewScenePano;
   final Function(String) onSetDefaultScene;
 
   const ShowScenesScreen({
@@ -17,6 +18,7 @@ class ShowScenesScreen extends StatefulWidget {
     required this.tour,
     required this.onReloadScenes,
     required this.onOpenScene,
+    required this.onOpenNewScenePano,
     required this.onSetDefaultScene
   }): super(key: key);
 
@@ -58,13 +60,11 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
       floatingActionButton: ExpandableFab(
         distance: 100, 
         children: <Widget> [
-          // TODO
           ActionButton(
-            onPressed: () => print('Create new scene'),
+            onPressed: widget.onOpenNewScenePano,
             icon: const Icon(Icons.add_a_photo),
             tooltip: 'Создать новую сцену',
           ),
-          // TODO
           ActionButton(
             onPressed: onAddScene,
             icon: const Icon(Icons.upload),

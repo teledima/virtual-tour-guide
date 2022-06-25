@@ -29,7 +29,7 @@ class HotspotItemState extends State<HotspotItem> {
     if (widget.hotspotDetail is HotspotInfoDetail) {
       return Column(
         children: [
-          if (_showDescription) Text((widget.hotspotDetail as HotspotInfoDetail).description),
+          if (_showDescription) Text((widget.hotspotDetail as HotspotInfoDetail).description, style: TextStyle(color: widget.hotspotDetail.color),),
           IconButton(
             onPressed: () => setState(() => _showDescription = !_showDescription),
             icon: Icon(Icons.info_outline, color: widget.hotspotDetail.color)

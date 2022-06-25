@@ -8,12 +8,14 @@ class ShowScenesPage extends Page {
   final TourDetail tour;
   final Function() onReloadScenes;
   final Function(SceneDetail) onOpenScene;
+  final Function() onOpenNewScenePano;
   final Function(String) onSetDefaultScene;
 
   ShowScenesPage({
     required this.tour,
     required this.onReloadScenes,
     required this.onOpenScene,
+    required this.onOpenNewScenePano,
     required this.onSetDefaultScene
   }): super(key: ValueKey({"tour": tour, "showScenes": true}));
   
@@ -25,6 +27,7 @@ class ShowScenesPage extends Page {
         tour: tour, 
         onReloadScenes: onReloadScenes,
         onOpenScene: onOpenScene,
+        onOpenNewScenePano: onOpenNewScenePano,
         onSetDefaultScene: onSetDefaultScene
       )
     );

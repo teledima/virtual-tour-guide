@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_flutter/models.dart';
 import 'package:frontend_flutter/data/tour_repository.dart';
 import 'package:frontend_flutter/router/app_router/app_configuration.dart';
+import 'package:frontend_flutter/router/app_router/pages/new_pano_page.dart';
 import 'package:frontend_flutter/router/app_router/pages/show_scenes_page.dart';
 import 'pages/home_page.dart';
 import 'pages/pano_page.dart';
@@ -46,10 +47,13 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
         HomePage(
           onTourSelected: (tour) => currentTour = tour
         ),
-        if (currentTour != null) PanoPage(
+        if (currentTour != null && currentScene != SceneDetail.empty()) PanoPage(
           currentTour: currentTour!,
           currentScene: currentScene,
           onShowScenes: () => showScenes = true
+        ),
+        if (currentTour != null && currentScene == SceneDetail.empty()) NewPanoPage(
+          currentTour: currentTour!
         ),
         if (showScenes == true && currentTour != null) 
           ShowScenesPage(
@@ -57,6 +61,10 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
             onReloadScenes: () async => currentTour = await _tourRepository.fetchTour(currentTour!.tourId),
             onOpenScene: (SceneDetail scene) { 
               currentScene = scene;
+              showScenes = false;
+            },
+            onOpenNewScenePano: () {
+              currentScene = SceneDetail.empty();
               showScenes = false;
             },
             onSetDefaultScene: (String sceneId) => currentTour!.defaultDetail = DefaultDetail(sceneId)
@@ -85,7 +93,7 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
     if (configuration.isHomePage) {
       currentTour = null;
       showScenes = false;
-    } else if (configuration.isPanoPage) {
+    } else if (configuration.isPanoPage || configuration.isNewScene) {
       currentTour = configuration.currentTour;
       showScenes = false;
     } else if (configuration.isShowScenes) {
@@ -101,14 +109,14 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
   AppConfiguration? get currentConfiguration {
     if (currentTour == null) {
       return AppConfiguration.home();
-    } else if (currentTour != null) {
-      if (!showScenes) {
+    } else {
+      if (!showScenes && currentScene != SceneDetail.empty()) {
         return AppConfiguration.pano(currentTour!, currentScene);
+      } else if (!showScenes && currentScene == SceneDetail.empty()) {
+        return AppConfiguration.newScene(currentTour!);
       } else {
         return AppConfiguration.panoScenes(currentTour!);
       }
-    } else {
-      return null;
     }
   }
 }
