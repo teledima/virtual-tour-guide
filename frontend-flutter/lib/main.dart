@@ -15,10 +15,9 @@ Future main() async{
   late  List<CameraDescription> cameras;
   try {
     cameras = await availableCameras();
+    GetIt.I.registerSingleton<CameraDescription>(cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.back));
   } on CameraException {
     cameras = [];
-  } finally {
-    GetIt.I.registerSingleton<CameraDescription>(cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.back));
   }
   
   runApp(App());

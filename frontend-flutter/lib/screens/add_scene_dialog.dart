@@ -11,10 +11,12 @@ import 'package:frontend_flutter/data/scenes_repository.dart';
 class AddSceneDialog extends StatefulWidget {
   final ScenesRepository imageRepository = ScenesRepository();
   final String tourId;
+  final XFile? initialFile;
 
   AddSceneDialog({
     Key? key,
-    required this.tourId
+    required this.tourId,
+    this.initialFile
   }): super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class AddSceneDialog extends StatefulWidget {
 class AddSceneDialogState extends State<AddSceneDialog> {
   final _formKey = GlobalKey<FormState>();
   final _imageFieldKey = GlobalKey<FormFieldState<ImageField?>>();
-  final sceneNameController = TextEditingController();
+  late final TextEditingController sceneNameController;
 
   onSelectImage(FormFieldState<ImageField?> state) async{
     final ImagePicker _picker = ImagePicker();
@@ -75,16 +77,24 @@ class AddSceneDialogState extends State<AddSceneDialog> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    sceneNameController = TextEditingController(text: widget.initialFile?.name);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Добавить сцену'),
+      scrollable: true,
       content: Form(
         key: _formKey,
-        child: SingleChildScrollView(child: Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             FormField<ImageField?>(
               key: _imageFieldKey,
+              initialValue: widget.initialFile != null ? ImageField(widget.initialFile!.readAsBytes(), widget.initialFile!.mimeType ?? '') : null,
               builder: (formFieldState) => Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -144,7 +154,7 @@ class AddSceneDialogState extends State<AddSceneDialog> {
             )
             
           ],
-        ))
+        )
       ),
       actions: [
         ElevatedButton(

@@ -1,7 +1,10 @@
 // Flutter
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 // Application
 import 'package:frontend_flutter/models.dart';
+import 'package:frontend_flutter/screens/new_pano_screen.dart';
 import 'package:frontend_flutter/widgets/expandable_fab.dart';
 import 'package:frontend_flutter/widgets/scene_card.dart';
 import 'package:frontend_flutter/screens/add_scene_dialog.dart';
@@ -27,10 +30,10 @@ class ShowScenesScreen extends StatefulWidget {
 }
 
 class ShowScenesScreenState extends State<ShowScenesScreen> {
-  onAddScene() async {
+  onAddScene([XFile? file]) async {
     final reload = await showDialog<bool>(
       context: context, 
-      builder: (_) => AddSceneDialog(tourId: widget.tour.tourId)
+      builder: (_) => AddSceneDialog(tourId: widget.tour.tourId, initialFile: file,)
     );
     
     if (reload ?? false) widget.onReloadScenes();
@@ -61,12 +64,15 @@ class ShowScenesScreenState extends State<ShowScenesScreen> {
         distance: 100, 
         children: <Widget> [
           ActionButton(
-            onPressed: widget.onOpenNewScenePano,
+            onPressed: () async {
+              final output = await Navigator.of(context).push<XFile>(MaterialPageRoute(builder: (context) => const NewPanoScreen()));
+              onAddScene(output);
+            },
             icon: const Icon(Icons.add_a_photo),
             tooltip: 'Создать новую сцену',
           ),
           ActionButton(
-            onPressed: onAddScene,
+            onPressed: () => onAddScene(),
             icon: const Icon(Icons.upload),
             tooltip: 'Загрузить существующую сцену',
           ),
