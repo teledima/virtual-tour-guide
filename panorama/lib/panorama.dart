@@ -48,7 +48,8 @@ class Panorama extends StatefulWidget {
     this.onImageLoad,
     this.child,
     this.hotspots,
-    this.staticChildren
+    this.staticChildren,
+    this.reverse = false
   }) : super(key: key);
 
   /// The initial latitude, in degrees, between -90 and 90. default to 0 (the vertical center of the image).
@@ -134,6 +135,9 @@ class Panorama extends StatefulWidget {
 
   /// Static elements (have a fixed position) in the panorama
   final List<Positioned>? staticChildren;
+
+  /// Start rendering non-static or static hotspots;
+  final bool reverse;
 
   @override
   _PanoramaState createState() => _PanoramaState();
@@ -369,6 +373,13 @@ class _PanoramaState extends State<Panorama> with SingleTickerProviderStateMixin
 
   Widget buildWidgets() {
     final List<Widget> widgets = <Widget>[];
+    final List<Widget> _static = <Widget>[];
+    final List<Widget> _noStatic = <Widget>[];
+    if (widget.staticChildren != null && scene != null) {
+      for (var staticChild in widget.staticChildren!) {
+        _static.add(staticChild);
+      }
+    }
     if (widget.hotspots != null && scene != null) {
       for (Hotspot hotspot in widget.hotspots!) {
         final Vector3 pos = positionFromLatLon(hotspot.latitude, hotspot.longitude);
@@ -388,12 +399,15 @@ class _PanoramaState extends State<Panorama> with SingleTickerProviderStateMixin
             ),
           ),
         );
-        widgets.add(child);
+        _noStatic.add(child);
       }
-    }
-    if (widget.staticChildren != null && scene != null) {
-      for (var staticChild in widget.staticChildren!) {
-        widgets.add(staticChild);
+
+      if (widget.reverse) {
+        widgets.addAll(_static);
+        widgets.addAll(_noStatic);
+      } else {
+        widgets.addAll(_noStatic);
+        widgets.addAll(_static);
       }
     }
     return Stack(children: widgets, alignment: Alignment.bottomCenter);

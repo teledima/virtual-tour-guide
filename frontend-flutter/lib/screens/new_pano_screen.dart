@@ -20,6 +20,15 @@ class _NewPanoScreenState extends State<NewPanoScreen> {
   late double _currentLongtitude;
   final Offset latlonDelta = const Offset(1, 1);
   final double alignLatitude = 0;
+  final double previewWidth = 180;
+
+  get previewHeight {
+    if (_controller.value.isInitialized) {
+      return _controller.value.aspectRatio * previewWidth;
+    } else {
+      return 0;
+    }
+  }
 
   @override
   void initState() {
@@ -44,6 +53,7 @@ class _NewPanoScreenState extends State<NewPanoScreen> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) => Panorama(
+          reverse: true,
           sensorControl: SensorControl.Orientation,
           child: Image.asset('assets/black_image.jpg'),
           hotspots: [ 
@@ -54,6 +64,28 @@ class _NewPanoScreenState extends State<NewPanoScreen> {
             )
           ],
           staticChildren: [
+            Positioned(
+              top: (constraints.maxHeight - previewHeight) / 2,
+              left: (constraints.maxWidth - previewWidth) / 2,
+              width: previewWidth,
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 1, 
+                    child: FutureBuilder(
+                      future: _initializeControllerFuture, 
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return AspectRatio(aspectRatio: 1/_controller.value.aspectRatio, child:  CameraPreview(_controller));
+                        } else {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                      },
+                    )
+                  )
+                ]
+              )
+            ),
             Positioned(
               top: (constraints.maxHeight - 58) / 2,
               left: (constraints.maxWidth - 58) / 2,
