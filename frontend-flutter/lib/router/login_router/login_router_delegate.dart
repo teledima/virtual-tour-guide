@@ -41,7 +41,7 @@ class LoginRouterDelegate extends RouterDelegate<LoginConfiguration> with Change
     return Navigator(
       key: navigatorKey,
       pages: [
-        if (isLogin ?? false) LoginPage(
+        if (isLogin ?? false || isForgot || isCreateAccount) LoginPage(
           onLogin: () {
             isLogin = null;
             isCreateAccount = false;

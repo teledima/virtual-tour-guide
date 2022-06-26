@@ -33,57 +33,65 @@ class CreateAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 500),
-            alignment: Alignment.center,
-            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Align(
-                  alignment: Alignment.center, 
-                  child: Text('Регистрация', style: TextStyle(fontSize: 24),)
-                ),
-                const SizedBox(height: 12,),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Логин',
-                    border: OutlineInputBorder()
-                  ),
-                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите логин',
-                ),
-                const SizedBox(height: 12,),
-                PasswordFormField(
-                  labelText: 'Пароль',
-                  useShowButton: true, 
-                  validator: (value) => value != null && value.isNotEmpty ? null : 'Введите пароль',
-                ),
-                const SizedBox(height: 12,),
-                PasswordFormField(
-                  labelText: 'Повторите пароль',
-                  useShowButton: true, 
-                  validator: (value) => value != null && value.isNotEmpty ? null : 'Повторите пароль',
-                ),
-                const SizedBox(height: 16,),
-                TextButton(
-                  onPressed: () => onSubmitForm(context), 
-                  child: const Text('Зарегистрироваться'),
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: Colors.blue,
-                    fixedSize: const Size.fromHeight(40)
-                  ),
+    return WillPopScope(
+      child: Scaffold(
+        body: Form(
+          key: _formKey,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 500),
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Align(
+                      alignment: Alignment.center, 
+                      child: Text('Регистрация', style: TextStyle(fontSize: 24),)
+                    ),
+                    const SizedBox(height: 12,),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Логин',
+                        border: OutlineInputBorder()
+                      ),
+                      validator: (value) => value != null && value.isNotEmpty ? null : 'Введите логин',
+                    ),
+                    const SizedBox(height: 12,),
+                    PasswordFormField(
+                      labelText: 'Пароль',
+                      useShowButton: true, 
+                      validator: (value) => value != null && value.isNotEmpty ? null : 'Введите пароль',
+                    ),
+                    const SizedBox(height: 12,),
+                    PasswordFormField(
+                      labelText: 'Повторите пароль',
+                      useShowButton: true, 
+                      validator: (value) => value != null && value.isNotEmpty ? null : 'Повторите пароль',
+                    ),
+                    const SizedBox(height: 16,),
+                    TextButton(
+                      onPressed: () => onSubmitForm(context), 
+                      child: const Text('Зарегистрироваться'),
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.blue,
+                        fixedSize: const Size.fromHeight(40)
+                      ),
+                    )
+                  ],
                 )
-              ],
+              )
             )
           )
-        )
-      ),
+        ),
+      ), 
+      onWillPop: () async {
+        Navigator.of(context).pop();
+        return true;
+      }
     );
   }
 }
