@@ -1,0 +1,6 @@
+*.ipynb
+
+images/
+*__pycache__/
+*.idea/
+*.ipynb_checkpoints/

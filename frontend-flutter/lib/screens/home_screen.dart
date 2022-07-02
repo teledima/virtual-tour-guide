@@ -59,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 TourCard(tour: tour, onTourSelected: widget.onTourSelected) 
             ];
             return GridView.extent(maxCrossAxisExtent: 360, children: children,);
+          } else if (snapshot.hasError) {
+            return Center(child: Text(snapshot.error.toString()));
           } else {
             return const Center(child: Text('Loading...'));
           }
