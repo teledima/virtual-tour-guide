@@ -1,8 +1,11 @@
+const passport = require('passport')
 const express = require('express')
 const router = express.Router()
 
 const { ObjectId } = require('mongodb')
 let { mongoClient, tourCollection} = require('./utils/mongo')
+
+router.use(passport.authenticate('jwt', { session: false }))
 
 router.post('/', async(req, res) => {
     const body = req.body;

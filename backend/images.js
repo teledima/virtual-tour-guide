@@ -1,8 +1,11 @@
+const passport = require('passport')
 const mime = require('mime-types')
 const express = require('express')
 const router = express.Router()
 
 const minioClient = require('./utils/minio')
+
+router.use(passport.authenticate('jwt', { session: false }))
 
 router.get('/:image', (req, res) => {
     minioClient.getObject('demo-images', req.params.image, function(err, stream) {

@@ -1,15 +1,18 @@
+const passport = require('passport')
 const { ObjectId } = require('mongodb')
+const multer = require('multer')
 const mime = require('mime-types')
 const express = require('express')
 const router = express.Router()
 
-const multer = require('multer')
 const storage = multer.memoryStorage()
 const uploadMemory = multer({storage: storage})
 
 let { mongoClient, tourCollection } = require('./utils/mongo');
 const minioClient = require('./utils/minio');
 const createThumbnail = require('./utils/thumbnail');
+
+router.use(passport.authenticate('jwt', { session:false }))
 
 router.post('/', uploadMemory.single('image'), async(req, res) => {
     const imageName = new ObjectId().toHexString();

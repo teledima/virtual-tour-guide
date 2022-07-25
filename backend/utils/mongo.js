@@ -9,5 +9,6 @@ const client = new MongoClient(url)
 
 module.exports = { 
     mongoClient: client,
-    tourCollection: client.db(db_name).collection('tours')
+    tourCollection: client.db(db_name).collection('tours'),
+    userCollection: client.db(db_name).collection('users')
 };
