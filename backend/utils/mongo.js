@@ -1,14 +1,12 @@
 const { MongoClient } = require('mongodb')
-const db_user = process.env.MONGO_USER || 'test'
-const db_password = process.env.MONGO_PASSWORD || 'test'
-const db_name = process.env.MONGO_DATABASE || 'virtual_tour'
-const db_url = process.env.DB_URL || 'localhost:27017'
-const url = `mongodb://${db_user}:${db_password}@${db_url}?authMechanism=DEFAULT&authSource=${db_name}`
+
+const { mongo_host, mongo_port, mongo_user, mongo_password, mongo_db } = require('../constants')
+const url = `mongodb://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}?authMechanism=DEFAULT&authSource=${mongo_db}`
 
 const client = new MongoClient(url)
 
 module.exports = { 
     mongoClient: client,
-    tourCollection: client.db(db_name).collection('tours'),
-    userCollection: client.db(db_name).collection('users')
+    tourCollection: client.db(mongo_db).collection('tours'),
+    userCollection: client.db(mongo_db).collection('users')
 };

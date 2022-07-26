@@ -5,6 +5,7 @@ const express = require('express')
 let { mongoClient, userCollection } = require('./utils/mongo')
 const getRandomString = require('./utils/random_string')
 const getJwtToken = require('./utils/jwt_generator')
+const { salt_length } = require('./constants')
 
 const router = express.Router()
 
@@ -19,7 +20,7 @@ router.post('/sign-up', async(req, res) => {
     if (emailSearchResult) {
         res.status(422).send({error:  'email-exist'})
     } else {
-        salt = getRandomString(10)
+        salt = getRandomString(salt_length)
         const hash = createHash('sha512').update(body.password + salt)
         const insertResult = await userCollection.insertOne({
             name: body.name,

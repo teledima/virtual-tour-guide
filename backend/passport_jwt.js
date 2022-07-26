@@ -3,6 +3,8 @@ const passportJwt = require('passport-jwt')
 const JwtStrategy = passportJwt.Strategy,
       ExtractJwt  = passportJwt.ExtractJwt
 
+const { jwt_secret } = require('./constants')
+
 let { mongoClient, userCollection } = require('./utils/mongo')
 
 const opts = {
@@ -13,7 +15,7 @@ const opts = {
             }
         }
     ]),
-    secretOrKey: process.env.JWT_SECRET || 'secret',
+    secretOrKey: jwt_secret,
     algorithms: ['HS256']
 }
 

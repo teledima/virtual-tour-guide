@@ -1,11 +1,13 @@
 const minio = require('minio')
 
+const { minio_host, minio_port, minio_access_key, minio_secret_key } = require('../constants')
+
 const minioClient = new minio.Client({
-    endPoint: 'localhost',
-    port: 9000,
+    endPoint: minio_host,
+    port: minio_port,
     useSSL: false,
-    accessKey: 'minio',
-    secretKey: 'minio-admin'
+    accessKey: minio_access_key,
+    secretKey: minio_secret_key
 })
 
 module.exports = minioClient;
