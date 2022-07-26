@@ -23,7 +23,7 @@ module.exports = new JwtStrategy(opts, async(jwt_payload, done) => {
     mongoClient = await mongoClient.connect()
     const userSearch = await userCollection.findOne({email: jwt_payload.email})
     if (userSearch) {
-        return done(null, userSearch.email)
+        return done(null, {_id: userSearch._id, email: userSearch.email, name: userSearch.name})
     } else {
         return done(null, false)
     }
