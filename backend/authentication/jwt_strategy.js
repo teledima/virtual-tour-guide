@@ -3,9 +3,9 @@ const passportJwt = require('passport-jwt')
 const JwtStrategy = passportJwt.Strategy,
       ExtractJwt  = passportJwt.ExtractJwt
 
-const { jwt_secret } = require('./constants')
+const { jwt_secret } = require('../constants')
 
-let { mongoClient, userCollection } = require('./utils/mongo')
+let { mongoClient, userCollection } = require('../utils/mongo')
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromExtractors([
@@ -23,7 +23,7 @@ module.exports = new JwtStrategy(opts, async(jwt_payload, done) => {
     mongoClient = await mongoClient.connect()
     const userSearch = await userCollection.findOne({email: jwt_payload.email})
     if (userSearch) {
-        return done(null, {_id: userSearch._id, email: userSearch.email, name: userSearch.name})
+        return done(null, {_id: userSearch._id, email: userSearch.email, name: userSearch.name8})
     } else {
         return done(null, false)
     }

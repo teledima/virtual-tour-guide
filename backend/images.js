@@ -3,7 +3,7 @@ const mime = require('mime-types')
 const express = require('express')
 const router = express.Router()
 
-const minioClient = require('./utils/minio')
+const { minioClient } = require('./utils')
 
 router.use(passport.authenticate('jwt', { session: false }))
 

@@ -8,9 +8,8 @@ const router = express.Router()
 const storage = multer.memoryStorage()
 const uploadMemory = multer({storage: storage})
 
-let { mongoClient, tourCollection } = require('./utils/mongo');
-const minioClient = require('./utils/minio');
-const createThumbnail = require('./utils/thumbnail');
+const { getThumbnail, minioClient, mongo } = require('./utils')
+let { mongoClient, tourCollection } = mongo
 
 router.use(passport.authenticate('jwt', { session:false }))
 
@@ -40,7 +39,7 @@ router.post('/', uploadMemory.single('image'), async(req, res) => {
     let thumbnailErr = null 
 
     try {
-        const thumbnail = await createThumbnail(req.file.buffer);
+        const thumbnail = await getThumbnail(req.file.buffer);
         thumbnailPutRes = await minioClient.putObject(
             'demo-images', 
             thumbnailNameExt, 

@@ -6,7 +6,7 @@ const passport = require('passport')
 require('dotenv').config()
 
 const { server_port } = require('./constants')
-const jwtStrategy = require('./passport_jwt')
+const jwtStrategy = require('./authentication/jwt_strategy')
 const account = require('./account')
 const images = require('./images')
 const tours = require('./tours')

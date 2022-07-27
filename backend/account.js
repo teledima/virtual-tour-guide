@@ -2,10 +2,10 @@ const passport = require('passport')
 const { createHash } = require('crypto')
 const express = require('express')
 
-let { mongoClient, userCollection } = require('./utils/mongo')
-const getRandomString = require('./utils/random_string')
-const getJwtToken = require('./utils/jwt_generator')
+
 const { salt_length } = require('./constants')
+const {getRandomString, getJwtToken, mongo} = require('./utils')
+let { mongoClient, userCollection } = mongo
 
 const router = express.Router()
 

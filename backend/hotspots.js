@@ -3,7 +3,8 @@ const express = require('express')
 const router = express.Router()
 
 const { ObjectId } = require('mongodb')
-let { mongoClient, tourCollection} = require('./utils/mongo')
+const { mongo } = require('./utils')
+let { mongoClient, tourCollection } = mongo
 
 router.use(passport.authenticate('jwt', { session: false }))
 
