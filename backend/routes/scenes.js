@@ -8,7 +8,7 @@ const router = express.Router()
 const storage = multer.memoryStorage()
 const uploadMemory = multer({storage: storage})
 
-const { getThumbnail, minioClient, mongo } = require('./utils')
+const { getThumbnail, minioClient, mongo } = require('../utils')
 let { mongoClient, tourCollection } = mongo
 
 router.use(passport.authenticate('jwt', { session:false }))

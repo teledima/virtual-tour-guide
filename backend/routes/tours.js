@@ -3,7 +3,7 @@ const express = require('express')
 const { ObjectId } = require('mongodb')
 
 
-const { mongo } = require('./utils')
+const { mongo } = require('../utils')
 let { mongoClient, tourCollection } = mongo
 
 const router = express.Router()

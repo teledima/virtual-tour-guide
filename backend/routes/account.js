@@ -3,8 +3,8 @@ const { createHash } = require('crypto')
 const express = require('express')
 
 
-const { salt_length } = require('./constants')
-const {getRandomString, getJwtToken, mongo} = require('./utils')
+const { salt_length } = require('../constants')
+const {getRandomString, getJwtToken, mongo} = require('../utils')
 let { mongoClient, userCollection } = mongo
 
 const router = express.Router()
