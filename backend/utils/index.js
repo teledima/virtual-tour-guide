@@ -3,6 +3,7 @@ const getRandomString = require('./random_string')
 const getThumbnail = require('./thumbnail')
 const minioClient = require('./minio')
 const mongo = require('./mongo')
+const logger = require('./winston')
 
 
 module.exports = {
@@ -10,5 +11,6 @@ module.exports = {
     getRandomString,
     getThumbnail,
     minioClient,
-    mongo
+    mongo,
+    logger
 }
