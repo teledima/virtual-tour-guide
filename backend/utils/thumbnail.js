@@ -1,7 +1,6 @@
 const sharp = require('sharp')
 const fs = require('fs')
 const path = require('path')
-const axios = require('axios')
 
 module.exports = async function (buffer) {
     const image = sharp(buffer); 

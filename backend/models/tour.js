@@ -10,7 +10,8 @@ const hotspotShema = new mongoose.Schema({
 const sceneSchema = new mongoose.Schema({
     title: String,
     panorama: String,
-    hotSpots: [hotspotShema]
+    thumbnail: String,
+    hotSpots: { type: [hotspotShema], default: [] } 
 });
 
 const defaultSceneSchema = new mongoose.Schema({
